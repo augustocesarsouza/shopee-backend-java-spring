@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  postgres_shopee_java:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "Postgre12345!"
+    volumes:
+#      - ./postgresData/:/docker-entrypoint-initdb.d/01-basegeografica.sql
+#      - ./postgresData/:/docker-entrypoint-initdb.d/02-basegeografica.sql
+      - postgres_volume_data_shopee_java:/var/lib/postgresql/data
+    ports:
+      - 5437:5432
+
+  redis_shopee_java:
+     image: redis:6.0.7
+     container_name: redis_shopee_java
+     restart: always
+     volumes:
+       - redis_volume_data_shopee_java:/data
+     ports:
+     - 7008:6379
+  redis_insight_shopee_java:
+     image: redislabs/redisinsight:latest
+     container_name: redis_insight_shopee_java
+     restart: always
+     ports:
+       - 5505:8001
+     volumes:
+     - redis_insight_volume_data_shopee_java:/db
+
+volumes:
+  postgres_volume_data_shopee_java:
+  redis_volume_data_shopee_java:
+  redis_insight_volume_data_shopee_java:
