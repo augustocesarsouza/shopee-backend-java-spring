@@ -2,13 +2,18 @@ package com.backend.shopee.shopee_backend.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "tb_users", schema = "public")
-public class User {
+public class User implements UserDetails {
     @jakarta.persistence.Id
     @Column(name = "user_id")
     @JsonProperty("id")
@@ -149,5 +154,40 @@ public class User {
         BirthDate = birthDate;
         ConfirmEmail = confirmEmail;
         UserImage = userImage;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    @Override
+    public String getPassword() {
+        return PasswordHash;
+    }
+
+    @Override
+    public String getUsername() {
+        return Phone;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

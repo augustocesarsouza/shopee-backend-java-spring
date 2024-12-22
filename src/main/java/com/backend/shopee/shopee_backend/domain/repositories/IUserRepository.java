@@ -12,6 +12,9 @@ public interface IUserRepository {
     User GetUserByName(String name);
     User GetIfUserExistEmail(String email);
     User GetUserInfoToLogin(String phone);
+    User GetUserByIdForDeleteImg(UUID userId);
+    User GetUserByIdInfoEmailPasswordHash(UUID guidId);
+    User GetUserByPhoneInfoEmailPasswordHash(String phone);
     User create(User user);
     User update(User user);
     User delete(UUID userId);

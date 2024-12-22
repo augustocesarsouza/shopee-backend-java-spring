@@ -52,6 +52,22 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
+    public User GetUserByIdForDeleteImg(UUID userId) {
+        return userRepositoryJPA.GetUserByIdForDeleteImg(userId);
+    }
+
+    @Override
+    public User GetUserByIdInfoEmailPasswordHash(UUID guidId) {
+        return userRepositoryJPA.GetUserByIdInfoEmailPasswordHash(guidId);
+        //@Query("SELECT u.Email, u.PasswordHash FROM User AS u WHERE u.Id = :userId")
+    }
+
+    @Override
+    public User GetUserByPhoneInfoEmailPasswordHash(String phone) {
+        return userRepositoryJPA.GetUserByPhoneInfoEmailPasswordHash(phone);
+    }
+
+    @Override
     public User create(User user) {
         if(user == null)
             return null;

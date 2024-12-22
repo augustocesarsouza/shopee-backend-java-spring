@@ -5,7 +5,6 @@ import com.backend.shopee.shopee_backend.application.dto.validateErrosDTOs.IVali
 import com.backend.shopee.shopee_backend.application.dto.validations.userValidationDTOs.UserCreateValidatorDTO;
 import com.backend.shopee.shopee_backend.application.services.interfaces.IUserManagementService;
 import com.backend.shopee.shopee_backend.application.util.interfaces.IBCryptPasswordEncoderUtil;
-import com.backend.shopee.shopee_backend.data.cloudinaryUtil.CloudinaryCreate;
 import com.backend.shopee.shopee_backend.data.utilityExternal.Interface.ICloudinaryUti;
 import com.backend.shopee.shopee_backend.domain.entities.User;
 import com.backend.shopee.shopee_backend.domain.repositories.IUserRepository;
@@ -66,7 +65,7 @@ public class UserManagementService implements IUserManagementService {
         }
 
         User userCreate = new User();
-
+        // fazer login, tem que testar o "DELETE" quando deletar um registro e deletar a imagem, porque tem que retirar da img o "publicID"
         try {
             String passwordEncoder = bCryptPasswordEncoder.encodePassword(userCreateValidatorDTO.getPassword());
             UUID uuid_user_id = UUID.randomUUID();
@@ -100,7 +99,7 @@ public class UserManagementService implements IUserManagementService {
         }
     }
 
-    private static String generateRandomName(int length) {
+    private static String generateRandomName(Integer length) {
         Random random = new Random();
 
         // Definir os caracteres possíveis para a string aleatória
@@ -118,5 +117,27 @@ public class UserManagementService implements IUserManagementService {
 
         // Retornar a string com o prefixo
         return prefix + randomString.toString();
+    }
+
+    @Override
+    public ResultService<UserDTO> DeleteUser(UUID userID) {
+        try {
+            var userDelete = userRepository.GetUserByIdForDeleteImg(userID);
+
+            if(userDelete == null)
+                return ResultService.Fail("User not found");
+
+            var deleteFound = cloudinaryUti.DeleteFileCloudinaryExtractingPublicIdFromUrlList(userDelete.getUserImage());
+
+            if(!deleteFound.getDeleteSuccessfully())
+                return ResultService.Fail(deleteFound.getMessage());
+
+            var userDeleteSuccessfully = userRepository.delete(userDelete.getId());
+
+            return ResultService.Ok(modelMapper.map(userDeleteSuccessfully, UserDTO.class));
+
+        }catch (Exception ex){
+            return ResultService.Fail(ex.getMessage());
+        }
     }
 }

@@ -25,4 +25,16 @@ public class CloudinaryResult {
     public void setMessage(String message) {
         Message = message;
     }
+
+    public Boolean getDeleteSuccessfully() {
+        return DeleteSuccessfully;
+    }
+
+    public Boolean getCreateSuccessfully() {
+        return CreateSuccessfully;
+    }
+
+    public String getMessage() {
+        return Message;
+    }
 }

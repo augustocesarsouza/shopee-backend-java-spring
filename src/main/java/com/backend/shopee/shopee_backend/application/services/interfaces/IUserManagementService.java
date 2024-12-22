@@ -11,4 +11,5 @@ import java.util.UUID;
 public interface IUserManagementService {
     ResultService<UserDTO> findById(String phone);
     ResultService<UserDTO> create(UserCreateValidatorDTO userCreateValidatorDTO, BindingResult result);
+    ResultService<UserDTO> DeleteUser(UUID userID);
 }

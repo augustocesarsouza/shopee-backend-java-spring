@@ -1,5 +1,6 @@
 package com.backend.shopee.shopee_backend;
 
+import com.backend.shopee.shopee_backend.data.authentication.FilterToken;
 import com.cloudinary.Cloudinary;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -26,7 +27,7 @@ import java.util.Map;
 @Configuration
 @EnableWebSecurity
 public class Configurations {
-//    private FilterToken filter;
+    private FilterToken filter;
     @Value("${CLOUD-NAME}")
     private String CLOUD_NAME;
     @Value("${API-KEY}")
@@ -34,10 +35,10 @@ public class Configurations {
     @Value("${API-SECRET}")
     private String API_SECRET;
 
-//    @Autowired
-//    public Configurations(FilterToken filter) {
-//        this.filter = filter;
-//    }
+    @Autowired
+    public Configurations(FilterToken filter) {
+        this.filter = filter;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -50,8 +51,7 @@ public class Configurations {
                                 .requestMatchers(HttpMethod.POST, "/v1/public/**").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/v1/public/**").permitAll()
                                 .requestMatchers(HttpMethod.DELETE, "/v1/public/**").permitAll()
-                                .anyRequest().authenticated())
-//                .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
+                                .anyRequest().authenticated()).addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(httpSecuritySessionManagementConfigurer ->
                         httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
