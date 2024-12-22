@@ -13,9 +13,8 @@ import java.util.UUID;
 
 public interface IUserAuthenticationService {
     ResultService<UserDTO> GetByIdInfoUser(UUID userId);
-    ResultService<UserDTO> VerifyEmailAlreadySetUp(UserConfirmCodeEmailValidatorDTO userConfirmCodeEmailValidatorDTO, BindingResult result);
     ResultService<CodeSendEmailUserValidatorDTO> SendCodeEmail(CodeSendEmailUserValidatorDTO codeSendEmailUserValidatorDTO, BindingResult result);
+    ResultService<UserDTO> VerifyEmailAlreadySetUp(UserConfirmCodeEmailValidatorDTO userConfirmCodeEmailValidatorDTO, BindingResult result);
     ResultService<UserLoginDTO> Login(String phone, String password);
-    ResultService<UserPasswordUpdateDTO> ChangePasswordUser(UserChangePasswordDTO userChangePasswordDTO);
     ResultService<UserLoginDTO> VerifyPasswordUser(String phone,String password);
 }

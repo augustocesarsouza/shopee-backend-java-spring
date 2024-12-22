@@ -1,7 +1,11 @@
 package com.backend.shopee.shopee_backend.api.controllers;
 
+import com.backend.shopee.shopee_backend.application.dto.UserChangePasswordDTO;
 import com.backend.shopee.shopee_backend.application.dto.UserDTO;
 import com.backend.shopee.shopee_backend.application.dto.UserLoginDTO;
+import com.backend.shopee.shopee_backend.application.dto.UserPasswordUpdateDTO;
+import com.backend.shopee.shopee_backend.application.dto.validations.userValidationDTOs.CodeSendEmailUserValidatorDTO;
+import com.backend.shopee.shopee_backend.application.dto.validations.userValidationDTOs.UserConfirmCodeEmailValidatorDTO;
 import com.backend.shopee.shopee_backend.application.dto.validations.userValidationDTOs.UserCreateValidatorDTO;
 import com.backend.shopee.shopee_backend.application.services.ResultService;
 import com.backend.shopee.shopee_backend.application.services.interfaces.IUserAuthenticationService;
@@ -54,6 +58,40 @@ public class UserController {
     @PostMapping("/public/user/create")
     public ResponseEntity<ResultService<UserDTO>> Create(@Valid @RequestBody UserCreateValidatorDTO userCreateValidatorDTO,  BindingResult resultValid){
         var result = userManagementService.create(userCreateValidatorDTO, resultValid);
+
+        if(result.IsSuccess){
+            return ResponseEntity.ok(result);
+        }
+
+        return ResponseEntity.badRequest().body(result);
+    }
+
+    @PostMapping("/public/user/confirm-email-send-code")
+    public ResponseEntity<ResultService<CodeSendEmailUserValidatorDTO>> SendCodeEmail(@Valid @RequestBody CodeSendEmailUserValidatorDTO codeSendEmailUserValidatorDTO, BindingResult resultValid){
+        var result = userAuthenticationService.SendCodeEmail(codeSendEmailUserValidatorDTO, resultValid);
+
+        if(result.IsSuccess){
+            return ResponseEntity.ok(result);
+        }
+
+        return ResponseEntity.badRequest().body(result);
+    }
+
+    @PostMapping("/public/user/verify")
+    public ResponseEntity<ResultService<UserDTO>> VerifyEmailAlreadySetUp(@Valid @RequestBody UserConfirmCodeEmailValidatorDTO userConfirmCodeEmailValidatorDTO,
+                                                                                                BindingResult resultValid){
+        var result = userAuthenticationService.VerifyEmailAlreadySetUp(userConfirmCodeEmailValidatorDTO, resultValid);
+
+        if(result.IsSuccess){
+            return ResponseEntity.ok(result);
+        }
+
+        return ResponseEntity.badRequest().body(result);
+    }
+
+    @PutMapping("/public/user/update-user-password")
+    public ResponseEntity<ResultService<UserPasswordUpdateDTO>> update(@Valid @RequestBody UserChangePasswordDTO userChangePasswordDTO, BindingResult resultValid){
+        var result = userManagementService.ChangePasswordUser(userChangePasswordDTO, resultValid);
 
         if(result.IsSuccess){
             return ResponseEntity.ok(result);

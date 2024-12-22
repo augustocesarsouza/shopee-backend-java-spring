@@ -1,9 +1,8 @@
 package com.backend.shopee.shopee_backend.application.services;
 
-import com.backend.shopee.shopee_backend.application.dto.UserChangePasswordDTO;
 import com.backend.shopee.shopee_backend.application.dto.UserDTO;
 import com.backend.shopee.shopee_backend.application.dto.UserLoginDTO;
-import com.backend.shopee.shopee_backend.application.dto.UserPasswordUpdateDTO;
+import com.backend.shopee.shopee_backend.application.dto.validateErrosDTOs.IValidateErrorsDTO;
 import com.backend.shopee.shopee_backend.application.dto.validations.userValidationDTOs.CodeSendEmailUserValidatorDTO;
 import com.backend.shopee.shopee_backend.application.dto.validations.userValidationDTOs.UserConfirmCodeEmailValidatorDTO;
 import com.backend.shopee.shopee_backend.application.services.interfaces.IUserAuthenticationService;
@@ -34,16 +33,18 @@ public class UserAuthenticationService implements IUserAuthenticationService {
     private final IDictionaryCode dictionaryCode;
     private final AuthenticationManager authenticationManager;
     private final ITokenGenerator tokenGenerator;
+    private final IValidateErrorsDTO validateErrorsDTO;
 
     @Autowired
     public UserAuthenticationService(IUserRepository userRepository, ModelMapper modelMapper, ISendEmailUser sendEmailUser, IDictionaryCode dictionaryCode,
-                                     AuthenticationManager authenticationManager, ITokenGenerator tokenGenerator) {
+                                     AuthenticationManager authenticationManager, ITokenGenerator tokenGenerator, IValidateErrorsDTO validateErrorsDTO) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.sendEmailUser = sendEmailUser;
         this.dictionaryCode = dictionaryCode;
         this.authenticationManager = authenticationManager;
         this.tokenGenerator = tokenGenerator;
+        this.validateErrorsDTO = validateErrorsDTO;
     }
 
     @Override
@@ -60,13 +61,79 @@ public class UserAuthenticationService implements IUserAuthenticationService {
     }
 
     @Override
-    public ResultService<UserDTO> VerifyEmailAlreadySetUp(UserConfirmCodeEmailValidatorDTO userConfirmCodeEmailValidatorDTO, BindingResult result) {
-        return null;
+    public ResultService<CodeSendEmailUserValidatorDTO> SendCodeEmail(CodeSendEmailUserValidatorDTO codeSendEmailUserValidatorDTO, BindingResult result) {
+        if(codeSendEmailUserValidatorDTO == null) return ResultService.Fail("Error DTO Informed is null");
+
+        if(result.hasErrors()){
+            var errorsDTO = result.getAllErrors();
+            var errors = validateErrorsDTO.ValidateDTO(errorsDTO);
+
+            return ResultService.RequestError("error validate DTO", errors);
+        }
+
+        try {
+            User user = userRepository.GetUserByName(codeSendEmailUserValidatorDTO.getName());
+
+            if (user == null) return ResultService.Fail("Error user info login is null");
+
+            if(user.getEmail() != null){
+                return ResultService.Ok(new CodeSendEmailUserValidatorDTO(null, null, null,
+                        false, true));
+            }
+
+            user.setEmail(codeSendEmailUserValidatorDTO.getEmail());
+
+            int randomCode = generateRandomNumber();
+            dictionaryCode.putKeyValueDictionary(user.getId().toString(), randomCode);
+
+            var resultSend = sendEmailUser.sendCodeRandom(user, randomCode);
+
+            if(!resultSend.IsSuccess){
+                return ResultService.Fail(new CodeSendEmailUserValidatorDTO(null, null, resultSend.Data,
+                        false, false));
+            }
+
+             return ResultService.Ok(new CodeSendEmailUserValidatorDTO(null, null, String.valueOf(randomCode),
+                    true, false));
+
+        }catch (Exception ex){
+            return ResultService.Fail(ex.getMessage());
+        }
     }
 
     @Override
-    public ResultService<CodeSendEmailUserValidatorDTO> SendCodeEmail(CodeSendEmailUserValidatorDTO codeSendEmailUserValidatorDTO, BindingResult result) {
-        return null;
+    public ResultService<UserDTO> VerifyEmailAlreadySetUp(UserConfirmCodeEmailValidatorDTO userConfirmCodeEmailValidatorDTO, BindingResult result) {
+        if(userConfirmCodeEmailValidatorDTO == null) return ResultService.Fail("Error DTO Informed is null");
+
+        if(result.hasErrors()){
+            var errorsDTO = result.getAllErrors();
+            var errors = validateErrorsDTO.ValidateDTO(errorsDTO);
+
+            return ResultService.RequestError("error validate DTO", errors);
+        }
+
+        try {
+            var userId = userConfirmCodeEmailValidatorDTO.getUserId();
+            var value = dictionaryCode.getKeyDictionary(String.valueOf(userId));
+
+            if(value != null)
+            {
+                var user = userRepository.GetUserById(UUID.fromString(userId));
+
+                if (user == null) return ResultService.Fail("user not found");
+
+                user.setEmail(userConfirmCodeEmailValidatorDTO.getEmail());
+
+                var userUpdate = userRepository.update(user);
+                dictionaryCode.removeKeyDictionary(String.valueOf(userUpdate.getId()));
+
+                return ResultService.Ok(modelMapper.map(userUpdate, UserDTO.class));
+            }else {
+                return ResultService.Fail("Error Code Not Found");
+            }
+        }catch (Exception ex){
+            return ResultService.Fail(ex.getMessage());
+        }
     }
 
     @Override
@@ -113,13 +180,30 @@ public class UserAuthenticationService implements IUserAuthenticationService {
     }
 
     @Override
-    public ResultService<UserPasswordUpdateDTO> ChangePasswordUser(UserChangePasswordDTO userChangePasswordDTO) {
-        return null;
-    }
-
-    @Override
     public ResultService<UserLoginDTO> VerifyPasswordUser(String phone, String password) {
-        return null;
+        var userLoginDTO = new UserLoginDTO();
+
+        try {
+            var user = userRepository.GetUserInfoToLogin(phone);
+
+            if(user == null) return ResultService.Fail("User not found");
+
+            var usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(phone, password);
+            Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+
+            User userAuth = (User) authenticate.getPrincipal();
+
+            userAuth.setPasswordHash(null);
+
+            userLoginDTO.setPasswordIsCorrect(true);
+            userLoginDTO.setUserDTO(modelMapper.map(userAuth, UserDTO.class));
+
+            return ResultService.Ok(userLoginDTO);
+        }catch (Exception ex){
+            userLoginDTO.setPasswordIsCorrect(false);
+            userLoginDTO.setUserDTO(null);
+            return ResultService.Fail(userLoginDTO);
+        }
     }
 
     private static int generateRandomNumber(){

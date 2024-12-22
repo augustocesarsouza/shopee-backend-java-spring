@@ -1,6 +1,8 @@
 package com.backend.shopee.shopee_backend.application.services;
 
+import com.backend.shopee.shopee_backend.application.dto.UserChangePasswordDTO;
 import com.backend.shopee.shopee_backend.application.dto.UserDTO;
+import com.backend.shopee.shopee_backend.application.dto.UserPasswordUpdateDTO;
 import com.backend.shopee.shopee_backend.application.dto.validateErrosDTOs.IValidateErrorsDTO;
 import com.backend.shopee.shopee_backend.application.dto.validations.userValidationDTOs.UserCreateValidatorDTO;
 import com.backend.shopee.shopee_backend.application.services.interfaces.IUserManagementService;
@@ -117,6 +119,41 @@ public class UserManagementService implements IUserManagementService {
 
         // Retornar a string com o prefixo
         return prefix + randomString.toString();
+    }
+
+    @Override
+    public ResultService<UserPasswordUpdateDTO> ChangePasswordUser(UserChangePasswordDTO userChangePasswordDTO, BindingResult resultValid) {
+        if(userChangePasswordDTO == null)
+            return ResultService.Fail("obj null");
+
+        try {
+            if(resultValid.hasErrors()){
+                var errorsDTO = resultValid.getAllErrors();
+                var errors = validateErrorsDTO.ValidateDTO(errorsDTO);
+
+                return ResultService.RequestError("error validate DTO", errors);
+            }
+
+            var user = userRepository.GetUserByPhoneInfoUpdate(userChangePasswordDTO.getPhone());
+
+            if(user == null)
+                return ResultService.Fail("user not found");
+
+            String passwordEncoder = bCryptPasswordEncoder.encodePassword(userChangePasswordDTO.getConfirmPassword());
+
+            user.setPasswordHash(passwordEncoder);
+
+            var userChange = userRepository.update(user);
+
+            if(userChange == null)
+                return ResultService.Fail("error when updating user");
+
+            var modelUser = new UserPasswordUpdateDTO(true);
+
+            return ResultService.Ok(modelUser);
+        }catch (Exception ex){
+            return ResultService.Fail(ex.getMessage());
+        }
     }
 
     @Override

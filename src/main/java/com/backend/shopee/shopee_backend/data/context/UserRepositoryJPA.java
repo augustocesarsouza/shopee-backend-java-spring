@@ -16,7 +16,7 @@ public interface UserRepositoryJPA extends JpaRepository<User, UUID> {
             "WHERE x.Id = :id")
     User GetUserById(UUID id);
     @Query("SELECT new com.backend.shopee.shopee_backend.domain.entities." +
-            "User(x.Id, x.Name, x.Email, x.Gender, x.Phone, null, x.Cpf, x.BirthDate, x.ConfirmEmail, x.UserImage) " +
+            "User(x.Id, x.Name, x.Email, x.Gender, x.Phone, x.PasswordHash, x.Cpf, x.BirthDate, x.ConfirmEmail, x.UserImage) " +
             "FROM User AS x " +
             "WHERE x.Phone = :phone")
     User GetUserByPhoneInfoUpdate(String phone);
