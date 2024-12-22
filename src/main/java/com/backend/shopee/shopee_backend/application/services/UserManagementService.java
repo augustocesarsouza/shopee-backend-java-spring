@@ -5,6 +5,7 @@ import com.backend.shopee.shopee_backend.application.dto.UserDTO;
 import com.backend.shopee.shopee_backend.application.dto.UserPasswordUpdateDTO;
 import com.backend.shopee.shopee_backend.application.dto.validateErrosDTOs.IValidateErrorsDTO;
 import com.backend.shopee.shopee_backend.application.dto.validations.userValidationDTOs.UserCreateValidatorDTO;
+import com.backend.shopee.shopee_backend.application.dto.validations.userValidationDTOs.UserUpdateAllDTOValidator;
 import com.backend.shopee.shopee_backend.application.services.interfaces.IUserManagementService;
 import com.backend.shopee.shopee_backend.application.util.interfaces.IBCryptPasswordEncoderUtil;
 import com.backend.shopee.shopee_backend.data.utilityExternal.Interface.ICloudinaryUti;
@@ -151,6 +152,58 @@ public class UserManagementService implements IUserManagementService {
             var modelUser = new UserPasswordUpdateDTO(true);
 
             return ResultService.Ok(modelUser);
+        }catch (Exception ex){
+            return ResultService.Fail(ex.getMessage());
+        }
+    }
+
+    @Override
+    public ResultService<UserDTO> UpdateUserAll(UserUpdateAllDTOValidator userUpdateAllDTOValidator, BindingResult resultValid) {
+        if(userUpdateAllDTOValidator == null)
+            return ResultService.Fail("obj null");
+
+        try {
+            if(resultValid.hasErrors()){
+                var errorsDTO = resultValid.getAllErrors();
+                var errors = validateErrorsDTO.ValidateDTO(errorsDTO);
+
+                return ResultService.RequestError("error validate DTO", errors);
+            }
+
+            var userToUpdate = userRepository.GetUserById(UUID.fromString(userUpdateAllDTOValidator.getUserId()));
+
+            if(userToUpdate == null)
+                return ResultService.Fail("Error UserToUpdate Is null");
+
+            if(userUpdateAllDTOValidator.getBase64StringImage() != null){
+                var deleteFound = cloudinaryUti.DeleteFileCloudinaryExtractingPublicIdFromUrlList(userToUpdate.getUserImage());
+
+                if(!deleteFound.getDeleteSuccessfully())
+                    return ResultService.Fail(deleteFound.getMessage());
+
+                var resultCreate = cloudinaryUti.CreateMedia(userUpdateAllDTOValidator.getBase64StringImage(), "img-user", 320, 320);
+
+                if (!resultCreate.getCreatedSuccessfully())
+                    return ResultService.Fail("Invalid media type. Only images and videos are supported");
+
+                if (resultCreate.getImgUrl() == null || resultCreate.getPublicId() == null)
+                    return ResultService.Fail("error when create ImgPerfil");
+
+                userToUpdate.setName(userUpdateAllDTOValidator.getName());
+                userToUpdate.setEmail(userUpdateAllDTOValidator.getEmail());
+                userToUpdate.setGender(userUpdateAllDTOValidator.getGender());
+                userToUpdate.setPhone(userUpdateAllDTOValidator.getPhone());
+                userToUpdate.setUserImage(resultCreate.getImgUrl());
+
+                var updateUser = userRepository.update(userToUpdate);
+
+                if(updateUser == null)
+                    return ResultService.Fail("error updateUser is null");
+
+                return ResultService.Ok(modelMapper.map(updateUser, UserDTO.class));
+            }
+
+            return ResultService.Fail("Error Base64StringImage Is null");
         }catch (Exception ex){
             return ResultService.Fail(ex.getMessage());
         }

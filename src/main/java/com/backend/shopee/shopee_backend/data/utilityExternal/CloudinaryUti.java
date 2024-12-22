@@ -60,6 +60,7 @@ public class CloudinaryUti implements ICloudinaryUti {
             CloudinaryCreate cloudinaryCreate = new CloudinaryCreate();
             cloudinaryCreate.setImgUrl((String) uploadResult.get("secure_url"));
             cloudinaryCreate.setPublicId((String) uploadResult.get("public_id"));
+            cloudinaryCreate.setCreatedSuccessfully(true);
 
             return cloudinaryCreate;
 

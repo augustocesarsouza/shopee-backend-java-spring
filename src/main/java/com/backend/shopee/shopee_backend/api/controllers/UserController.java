@@ -7,6 +7,7 @@ import com.backend.shopee.shopee_backend.application.dto.UserPasswordUpdateDTO;
 import com.backend.shopee.shopee_backend.application.dto.validations.userValidationDTOs.CodeSendEmailUserValidatorDTO;
 import com.backend.shopee.shopee_backend.application.dto.validations.userValidationDTOs.UserConfirmCodeEmailValidatorDTO;
 import com.backend.shopee.shopee_backend.application.dto.validations.userValidationDTOs.UserCreateValidatorDTO;
+import com.backend.shopee.shopee_backend.application.dto.validations.userValidationDTOs.UserUpdateAllDTOValidator;
 import com.backend.shopee.shopee_backend.application.services.ResultService;
 import com.backend.shopee.shopee_backend.application.services.interfaces.IUserAuthenticationService;
 import com.backend.shopee.shopee_backend.application.services.interfaces.IUserManagementService;
@@ -92,6 +93,17 @@ public class UserController {
     @PutMapping("/public/user/update-user-password")
     public ResponseEntity<ResultService<UserPasswordUpdateDTO>> update(@Valid @RequestBody UserChangePasswordDTO userChangePasswordDTO, BindingResult resultValid){
         var result = userManagementService.ChangePasswordUser(userChangePasswordDTO, resultValid);
+
+        if(result.IsSuccess){
+            return ResponseEntity.ok(result);
+        }
+
+        return ResponseEntity.badRequest().body(result);
+    }
+
+    @PutMapping("/public/user/update-all-info")
+    public ResponseEntity<ResultService<UserDTO>> UpdateUserAll(@Valid @RequestBody UserUpdateAllDTOValidator userUpdateAllDTOValidator, BindingResult resultValid){
+        var result = userManagementService.UpdateUserAll(userUpdateAllDTOValidator, resultValid);
 
         if(result.IsSuccess){
             return ResponseEntity.ok(result);
