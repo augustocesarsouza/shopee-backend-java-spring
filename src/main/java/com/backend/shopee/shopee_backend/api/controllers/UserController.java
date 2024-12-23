@@ -121,6 +121,17 @@ public class UserController {
         return ResponseEntity.badRequest().body(result);
     }
 
+    @PutMapping("/public/user/update-user")
+    public ResponseEntity<ResultService<UserDTO>> UpdateUserAll(@Valid @RequestBody UserUpdateFillDTOValidator userUpdateFillDTOValidator, BindingResult resultValid){
+        var result = userManagementService.UpdateUser(userUpdateFillDTOValidator, resultValid);
+
+        if(result.IsSuccess){
+            return ResponseEntity.ok(result);
+        }
+
+        return ResponseEntity.badRequest().body(result);
+    }
+
     @DeleteMapping("/public/user/delete/{userId}")
     public ResponseEntity<ResultService<UserDTO>> Create(@PathVariable String userId){
         var result = userManagementService.DeleteUser(UUID.fromString(userId));

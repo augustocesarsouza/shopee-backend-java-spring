@@ -75,18 +75,19 @@ public class UserAuthenticationService implements IUserAuthenticationService {
 
             return ResultService.RequestError("error validate DTO", errors);
         }
-
+        // tem que ter no numero o "codigo" do pais tipo brasil "+55"
         try {
 
             int randomCode = generateRandomNumber();
 
             var codeSend = sendSmsTwilio.SendSms(codeSendPhoneDTOValidator.getPhone(), String.valueOf(randomCode));
 
-            if(!codeSend) return ResultService.Fail("Error Send code Phone");
+            if(!codeSend)
+                return ResultService.Ok(new CodeSendPhoneDTOValidator(codeSendPhoneDTOValidator.getPhone(), String.valueOf(randomCode), false));
 
             dictionaryCode.putKeyValueDictionary(codeSendPhoneDTOValidator.getPhone(), randomCode);
 
-            return ResultService.Ok("Code Send to Email");
+            return ResultService.Ok(new CodeSendPhoneDTOValidator(codeSendPhoneDTOValidator.getPhone(), String.valueOf(randomCode), true));
         }catch (Exception ex){
             return ResultService.Fail(ex.getMessage());
         }

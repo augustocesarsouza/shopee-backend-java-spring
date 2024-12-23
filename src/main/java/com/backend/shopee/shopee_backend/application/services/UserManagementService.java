@@ -18,6 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Random;
 import java.util.UUID;
 
@@ -210,11 +214,44 @@ public class UserManagementService implements IUserManagementService {
         }
     }
 
-    @Override
+    @Override // no frontend aqui nesse component "FirstStepCreateAccount" tem como eu fiz o codigo e tal sem precisar mandar para celular nessa func "onClickResendCode"
     public ResultService<UserDTO> UpdateUser(UserUpdateFillDTOValidator userUpdateFillDTOValidator, BindingResult resultValid) {
-        return null; // fazer isso amanha e Ver o bagui de mandar codigo para Numero de Celular
-        // Mais eu acho que o bagui do celular nao vai dar porque foi dificil de achar e nao tem gratis
-        // no frontend aqui nesse component "FirstStepCreateAccount" tem como eu fiz o codigo e tal sem precisar mandar para celular nessa func "onClickResendCode"
+        try  {
+            if(userUpdateFillDTOValidator == null)
+                return ResultService.Fail("Error DTO is null");
+
+            if(resultValid.hasErrors()){
+                var errorsDTO = resultValid.getAllErrors();
+                var errors = validateErrorsDTO.ValidateDTO(errorsDTO);
+
+                return ResultService.RequestError("error validate DTO", errors);
+            }
+
+            var userToUpdate = userRepository.GetUserById(UUID.fromString(userUpdateFillDTOValidator.getUserId()));
+
+            if(userToUpdate == null)
+                return ResultService.Fail("Error user not found");
+
+            var stringSplit = userUpdateFillDTOValidator.getBirthDate().split("/");
+            int dia = Integer.parseInt(stringSplit[0]);
+            int mes = Integer.parseInt(stringSplit[1]);
+            int ano = Integer.parseInt(stringSplit[2]);
+
+            LocalDate birthDate = LocalDate.of(ano, mes, dia);
+            ZonedDateTime birthDateUtc = birthDate.atStartOfDay(ZoneId.of("UTC"));
+            LocalDateTime birthDateLocalDateTime = birthDateUtc.toLocalDateTime();
+
+            userToUpdate.setBirthDate(birthDateLocalDateTime);
+            userToUpdate.setCpf(userUpdateFillDTOValidator.getCpf());
+
+            var userUpdated = userRepository.update(userToUpdate);
+            userUpdated.setPasswordHash(null);
+
+            return ResultService.Ok(modelMapper.map(userUpdated, UserDTO.class));
+
+        }catch (Exception ex){
+            return ResultService.Fail(ex.getMessage());
+        }
     }
 
     @Override
