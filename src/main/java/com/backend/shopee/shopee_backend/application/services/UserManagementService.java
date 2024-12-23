@@ -6,6 +6,7 @@ import com.backend.shopee.shopee_backend.application.dto.UserPasswordUpdateDTO;
 import com.backend.shopee.shopee_backend.application.dto.validateErrosDTOs.IValidateErrorsDTO;
 import com.backend.shopee.shopee_backend.application.dto.validations.userValidationDTOs.UserCreateValidatorDTO;
 import com.backend.shopee.shopee_backend.application.dto.validations.userValidationDTOs.UserUpdateAllDTOValidator;
+import com.backend.shopee.shopee_backend.application.dto.validations.userValidationDTOs.UserUpdateFillDTOValidator;
 import com.backend.shopee.shopee_backend.application.services.interfaces.IUserManagementService;
 import com.backend.shopee.shopee_backend.application.util.interfaces.IBCryptPasswordEncoderUtil;
 import com.backend.shopee.shopee_backend.data.utilityExternal.Interface.ICloudinaryUti;
@@ -207,6 +208,13 @@ public class UserManagementService implements IUserManagementService {
         }catch (Exception ex){
             return ResultService.Fail(ex.getMessage());
         }
+    }
+
+    @Override
+    public ResultService<UserDTO> UpdateUser(UserUpdateFillDTOValidator userUpdateFillDTOValidator, BindingResult resultValid) {
+        return null; // fazer isso amanha e Ver o bagui de mandar codigo para Numero de Celular
+        // Mais eu acho que o bagui do celular nao vai dar porque foi dificil de achar e nao tem gratis
+        // no frontend aqui nesse component "FirstStepCreateAccount" tem como eu fiz o codigo e tal sem precisar mandar para celular nessa func "onClickResendCode"
     }
 
     @Override

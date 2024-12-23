@@ -4,10 +4,12 @@ import com.backend.shopee.shopee_backend.application.dto.UserDTO;
 import com.backend.shopee.shopee_backend.application.dto.UserLoginDTO;
 import com.backend.shopee.shopee_backend.application.dto.validateErrosDTOs.IValidateErrorsDTO;
 import com.backend.shopee.shopee_backend.application.dto.validations.userValidationDTOs.CodeSendEmailUserValidatorDTO;
+import com.backend.shopee.shopee_backend.application.dto.validations.userValidationDTOs.CodeSendPhoneDTOValidator;
 import com.backend.shopee.shopee_backend.application.dto.validations.userValidationDTOs.UserConfirmCodeEmailValidatorDTO;
 import com.backend.shopee.shopee_backend.application.services.interfaces.IUserAuthenticationService;
 import com.backend.shopee.shopee_backend.application.util.interfaces.IDictionaryCode;
 import com.backend.shopee.shopee_backend.data.utilityExternal.Interface.ISendEmailUser;
+import com.backend.shopee.shopee_backend.data.utilityExternal.Interface.ISendSmsTwilio;
 import com.backend.shopee.shopee_backend.domain.InfoErrors.InfoErrors;
 import com.backend.shopee.shopee_backend.domain.authentication.ITokenGenerator;
 import com.backend.shopee.shopee_backend.domain.authentication.TokenOutValue;
@@ -30,17 +32,20 @@ public class UserAuthenticationService implements IUserAuthenticationService {
     private final IUserRepository userRepository;
     private final ModelMapper modelMapper;
     private final ISendEmailUser sendEmailUser;
+    private final ISendSmsTwilio sendSmsTwilio;
     private final IDictionaryCode dictionaryCode;
     private final AuthenticationManager authenticationManager;
     private final ITokenGenerator tokenGenerator;
     private final IValidateErrorsDTO validateErrorsDTO;
 
     @Autowired
-    public UserAuthenticationService(IUserRepository userRepository, ModelMapper modelMapper, ISendEmailUser sendEmailUser, IDictionaryCode dictionaryCode,
-                                     AuthenticationManager authenticationManager, ITokenGenerator tokenGenerator, IValidateErrorsDTO validateErrorsDTO) {
+    public UserAuthenticationService(IUserRepository userRepository, ModelMapper modelMapper, ISendEmailUser sendEmailUser, ISendSmsTwilio sendSmsTwilio,
+                                     IDictionaryCode dictionaryCode, AuthenticationManager authenticationManager, ITokenGenerator tokenGenerator,
+                                     IValidateErrorsDTO validateErrorsDTO) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.sendEmailUser = sendEmailUser;
+        this.sendSmsTwilio = sendSmsTwilio;
         this.dictionaryCode = dictionaryCode;
         this.authenticationManager = authenticationManager;
         this.tokenGenerator = tokenGenerator;
@@ -55,6 +60,33 @@ public class UserAuthenticationService implements IUserAuthenticationService {
             if (user == null) return ResultService.Fail("User not found");
 
             return ResultService.Ok(modelMapper.map(user, UserDTO.class));
+        }catch (Exception ex){
+            return ResultService.Fail(ex.getMessage());
+        }
+    }
+
+    @Override
+    public ResultService<CodeSendPhoneDTOValidator> SendCodePhone(CodeSendPhoneDTOValidator codeSendPhoneDTOValidator, BindingResult result) {
+        if(codeSendPhoneDTOValidator == null) return ResultService.Fail("Error DTO Informed is null");
+
+        if(result.hasErrors()){
+            var errorsDTO = result.getAllErrors();
+            var errors = validateErrorsDTO.ValidateDTO(errorsDTO);
+
+            return ResultService.RequestError("error validate DTO", errors);
+        }
+
+        try {
+
+            int randomCode = generateRandomNumber();
+
+            var codeSend = sendSmsTwilio.SendSms(codeSendPhoneDTOValidator.getPhone(), String.valueOf(randomCode));
+
+            if(!codeSend) return ResultService.Fail("Error Send code Phone");
+
+            dictionaryCode.putKeyValueDictionary(codeSendPhoneDTOValidator.getPhone(), randomCode);
+
+            return ResultService.Ok("Code Send to Email");
         }catch (Exception ex){
             return ResultService.Fail(ex.getMessage());
         }

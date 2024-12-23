@@ -4,10 +4,7 @@ import com.backend.shopee.shopee_backend.application.dto.UserChangePasswordDTO;
 import com.backend.shopee.shopee_backend.application.dto.UserDTO;
 import com.backend.shopee.shopee_backend.application.dto.UserLoginDTO;
 import com.backend.shopee.shopee_backend.application.dto.UserPasswordUpdateDTO;
-import com.backend.shopee.shopee_backend.application.dto.validations.userValidationDTOs.CodeSendEmailUserValidatorDTO;
-import com.backend.shopee.shopee_backend.application.dto.validations.userValidationDTOs.UserConfirmCodeEmailValidatorDTO;
-import com.backend.shopee.shopee_backend.application.dto.validations.userValidationDTOs.UserCreateValidatorDTO;
-import com.backend.shopee.shopee_backend.application.dto.validations.userValidationDTOs.UserUpdateAllDTOValidator;
+import com.backend.shopee.shopee_backend.application.dto.validations.userValidationDTOs.*;
 import com.backend.shopee.shopee_backend.application.services.ResultService;
 import com.backend.shopee.shopee_backend.application.services.interfaces.IUserAuthenticationService;
 import com.backend.shopee.shopee_backend.application.services.interfaces.IUserManagementService;
@@ -59,6 +56,18 @@ public class UserController {
     @PostMapping("/public/user/create")
     public ResponseEntity<ResultService<UserDTO>> Create(@Valid @RequestBody UserCreateValidatorDTO userCreateValidatorDTO,  BindingResult resultValid){
         var result = userManagementService.create(userCreateValidatorDTO, resultValid);
+
+        if(result.IsSuccess){
+            return ResponseEntity.ok(result);
+        }
+
+        return ResponseEntity.badRequest().body(result);
+    }
+
+    @PostMapping("/public/user/send-code-phone")
+    public ResponseEntity<ResultService<CodeSendPhoneDTOValidator>> SendCodePhone(@Valid @RequestBody CodeSendPhoneDTOValidator codeSendPhoneDTOValidator,
+                                                                                  BindingResult resultValid){
+        var result = userAuthenticationService.SendCodePhone(codeSendPhoneDTOValidator, resultValid);
 
         if(result.IsSuccess){
             return ResponseEntity.ok(result);
