@@ -31,9 +31,20 @@ public class UserController {
         this.userAuthenticationService = userAuthenticationService;
     }
 
-    @GetMapping("/user/find-by-id/{phone}")
-    public ResponseEntity<ResultService<UserDTO>> findById(@PathVariable String phone){
-        var result = userManagementService.findById(phone);
+    @GetMapping("/user/find-by-id/{userId}")
+    public ResponseEntity<ResultService<UserDTO>> findById(@PathVariable String userId){
+        var result = userManagementService.findById(userId);
+
+        if(result.IsSuccess){
+            return ResponseEntity.ok(result);
+        }
+
+        return ResponseEntity.badRequest().body(result);
+    }
+
+    @GetMapping("/user/find-by-id-to-address/{userId}")
+    public ResponseEntity<ResultService<UserDTO>> findByIdOnly(@PathVariable String userId){
+        var result = userManagementService.findByIdOnly(userId);
 
         if(result.IsSuccess){
             return ResponseEntity.ok(result);
@@ -76,7 +87,7 @@ public class UserController {
         return ResponseEntity.badRequest().body(result);
     }
 
-    @PostMapping("/public/user/confirm-email-send-code")
+    @PostMapping("/user/confirm-email-send-code")
     public ResponseEntity<ResultService<CodeSendEmailUserValidatorDTO>> SendCodeEmail(@Valid @RequestBody CodeSendEmailUserValidatorDTO codeSendEmailUserValidatorDTO, BindingResult resultValid){
         var result = userAuthenticationService.SendCodeEmail(codeSendEmailUserValidatorDTO, resultValid);
 
@@ -121,9 +132,10 @@ public class UserController {
         return ResponseEntity.badRequest().body(result);
     }
 
-    @PutMapping("/public/user/update-user")
-    public ResponseEntity<ResultService<UserDTO>> UpdateUserAll(@Valid @RequestBody UserUpdateFillDTOValidator userUpdateFillDTOValidator, BindingResult resultValid){
-        var result = userManagementService.UpdateUser(userUpdateFillDTOValidator, resultValid);
+    @PutMapping("/user/update-cpf-and-birthday-user") //update-user
+    public ResponseEntity<ResultService<UserDTO>> UpdateCpfAndBirthDayUser(@Valid @RequestBody UserUpdateFillDTOValidator userUpdateFillDTOValidator,
+                                                                           BindingResult resultValid){
+        var result = userManagementService.UpdateCpfAndBirthDayUser(userUpdateFillDTOValidator, resultValid);
 
         if(result.IsSuccess){
             return ResponseEntity.ok(result);

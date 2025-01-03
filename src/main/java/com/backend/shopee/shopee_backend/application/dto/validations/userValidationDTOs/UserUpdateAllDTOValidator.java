@@ -15,10 +15,8 @@ public class UserUpdateAllDTOValidator {
     @NotEmpty(message = "name should not be empty")
     @JsonProperty("name")
     private String Name;
-    @NotEmpty(message = "email should not be empty")
     @JsonProperty("email")
     private String Email;
-    @NotEmpty(message = "gender should not be empty")
     @JsonProperty("gender")
     private String Gender;
     @NotEmpty(message = "phone should not be empty")

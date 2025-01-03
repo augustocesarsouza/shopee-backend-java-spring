@@ -14,9 +14,11 @@ import java.util.UUID;
 
 public interface IUserManagementService {
     ResultService<UserDTO> findById(String phone);
+    ResultService<UserDTO> findByIdOnly(String userId);
+    ResultService<UserDTO> VerifyWhetherUserExist(UUID userId);
     ResultService<UserDTO> create(UserCreateValidatorDTO userCreateValidatorDTO, BindingResult result);
     ResultService<UserPasswordUpdateDTO> ChangePasswordUser(UserChangePasswordDTO userChangePasswordDTO, BindingResult resultValid);
     ResultService<UserDTO> UpdateUserAll(UserUpdateAllDTOValidator userUpdateAllDTOValidator, BindingResult resultValid);
-    ResultService<UserDTO> UpdateUser(UserUpdateFillDTOValidator userUpdateFillDTOValidator, BindingResult resultValid);
+    ResultService<UserDTO> UpdateCpfAndBirthDayUser(UserUpdateFillDTOValidator userUpdateFillDTOValidator, BindingResult resultValid);
     ResultService<UserDTO> DeleteUser(UUID userID);
 }

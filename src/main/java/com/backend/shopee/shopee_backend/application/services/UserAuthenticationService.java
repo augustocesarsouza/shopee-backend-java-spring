@@ -24,6 +24,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
+import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
 
@@ -77,17 +78,25 @@ public class UserAuthenticationService implements IUserAuthenticationService {
         }
         // tem que ter no numero o "codigo" do pais tipo brasil "+55"
         try {
+            var whetherExistPhoneAlready = userRepository.GetUserByPhone(codeSendPhoneDTOValidator.getPhone());
+
+            if(whetherExistPhoneAlready != null)
+                return ResultService.Ok(new CodeSendPhoneDTOValidator(codeSendPhoneDTOValidator.getPhone(), "",
+                        false, true));
 
             int randomCode = generateRandomNumber();
 
             var codeSend = sendSmsTwilio.SendSms(codeSendPhoneDTOValidator.getPhone(), String.valueOf(randomCode));
 
             if(!codeSend)
-                return ResultService.Ok(new CodeSendPhoneDTOValidator(codeSendPhoneDTOValidator.getPhone(), String.valueOf(randomCode), false));
+                return ResultService.Ok(new CodeSendPhoneDTOValidator(codeSendPhoneDTOValidator.getPhone(), String.valueOf(randomCode),
+                        false, false));
 
-            dictionaryCode.putKeyValueDictionary(codeSendPhoneDTOValidator.getPhone(), randomCode);
+//            dictionaryCode.putKeyValueDictionary(codeSendPhoneDTOValidator.getPhone(), randomCode);
+            dictionaryCode.putKeyValueDictionary(codeSendPhoneDTOValidator.getUserId(), randomCode);
 
-            return ResultService.Ok(new CodeSendPhoneDTOValidator(codeSendPhoneDTOValidator.getPhone(), String.valueOf(randomCode), true));
+            return ResultService.Ok(new CodeSendPhoneDTOValidator(codeSendPhoneDTOValidator.getPhone(), String.valueOf(randomCode),
+                    true, false));
         }catch (Exception ex){
             return ResultService.Fail(ex.getMessage());
         }
@@ -109,10 +118,21 @@ public class UserAuthenticationService implements IUserAuthenticationService {
 
             if (user == null) return ResultService.Fail("Error user info login is null");
 
-            if(user.getEmail() != null){
+//            if(user.getEmail() != null){
+//                return ResultService.Ok(new CodeSendEmailUserValidatorDTO(null, null, null,
+//                        false, true, false));
+//            }
+
+            var userEmailAlreadyRegistered = userRepository.GetIfUserExistEmail(codeSendEmailUserValidatorDTO.getEmail());
+
+            if(userEmailAlreadyRegistered != null)
                 return ResultService.Ok(new CodeSendEmailUserValidatorDTO(null, null, null,
-                        false, true));
-            }
+                        false, true, false));
+
+            if(Objects.equals(user.getEmail(), codeSendEmailUserValidatorDTO.getEmail()))
+                return ResultService.Ok(new CodeSendEmailUserValidatorDTO(null, null, null,
+                        false, false, true));
+
 
             user.setEmail(codeSendEmailUserValidatorDTO.getEmail());
 
@@ -123,11 +143,11 @@ public class UserAuthenticationService implements IUserAuthenticationService {
 
             if(!resultSend.IsSuccess){
                 return ResultService.Fail(new CodeSendEmailUserValidatorDTO(null, null, resultSend.Data,
-                        false, false));
+                        false, false, false));
             }
 
              return ResultService.Ok(new CodeSendEmailUserValidatorDTO(null, null, String.valueOf(randomCode),
-                    true, false));
+                    true, false, false));
 
         }catch (Exception ex){
             return ResultService.Fail(ex.getMessage());
@@ -155,12 +175,26 @@ public class UserAuthenticationService implements IUserAuthenticationService {
 
                 if (user == null) return ResultService.Fail("user not found");
 
-                user.setEmail(userConfirmCodeEmailValidatorDTO.getEmail());
+                if(userConfirmCodeEmailValidatorDTO.getEmail() != null){
+                    user.setEmail(userConfirmCodeEmailValidatorDTO.getEmail());
 
-                var userUpdate = userRepository.update(user);
-                dictionaryCode.removeKeyDictionary(String.valueOf(userUpdate.getId()));
+                    var userUpdate = userRepository.update(user);
+                    dictionaryCode.removeKeyDictionary(String.valueOf(userUpdate.getId()));
 
-                return ResultService.Ok(modelMapper.map(userUpdate, UserDTO.class));
+                    return ResultService.Ok(modelMapper.map(userUpdate, UserDTO.class));
+                }
+
+                if(userConfirmCodeEmailValidatorDTO.getPhone() != null){
+                    user.setPhone(userConfirmCodeEmailValidatorDTO.getPhone());
+
+                    var userUpdate = userRepository.update(user);
+                    dictionaryCode.removeKeyDictionary(String.valueOf(userUpdate.getId()));
+
+                    return ResultService.Ok(modelMapper.map(userUpdate, UserDTO.class));
+                }
+
+                dictionaryCode.removeKeyDictionary(userId);
+                return ResultService.Ok(modelMapper.map(user, UserDTO.class));
             }else {
                 return ResultService.Fail("Error Code Not Found");
             }
@@ -172,12 +206,12 @@ public class UserAuthenticationService implements IUserAuthenticationService {
     @Override
     @Transactional
     public ResultService<UserLoginDTO> Login(String phone, String password) {
+        var userLoginDTO = new UserLoginDTO();
+
         try {
             User user = userRepository.GetUserInfoToLogin(phone);
 
             if (user == null) return ResultService.Fail("Error user info login is null");
-
-            // Testando Login
 
             var usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(phone, password);
             Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
@@ -202,13 +236,14 @@ public class UserAuthenticationService implements IUserAuthenticationService {
 
             userDTO.setToken(tokenOut.Data.getAccess_Token());
 
-            var userLoginDTO = new UserLoginDTO();
             userLoginDTO.setPasswordIsCorrect(true);
             userLoginDTO.setUserDTO(userDTO);
 
             return ResultService.Ok(userLoginDTO);
         } catch (Exception ex) {
-            return ResultService.Fail(ex.getMessage());
+            userLoginDTO.setPasswordIsCorrect(false);
+            userLoginDTO.setMessage(ex.getMessage());
+            return ResultService.Fail(userLoginDTO);
         }
     }
 

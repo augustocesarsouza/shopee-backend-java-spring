@@ -8,11 +8,14 @@ public class UserLoginDTO {
     @JsonProperty("passwordIsCorrect")
     private Boolean PasswordIsCorrect;
     @JsonProperty("userDTO")
-    private UserDTO  UserDTO;
+    private UserDTO UserDTO;
+    @JsonProperty("message")
+    private String Message;
 
-    public UserLoginDTO(Boolean passwordIsCorrect, com.backend.shopee.shopee_backend.application.dto.UserDTO userDTO) {
+    public UserLoginDTO(Boolean passwordIsCorrect, UserDTO userDTO, String message) {
         PasswordIsCorrect = passwordIsCorrect;
         UserDTO = userDTO;
+        Message = message;
     }
 
     public UserLoginDTO() {
@@ -26,10 +29,15 @@ public class UserLoginDTO {
         return UserDTO;
     }
 
+    public String getMessage() {
+        return Message;
+    }
     public void setPasswordIsCorrect(Boolean passwordIsCorrect) {
         PasswordIsCorrect = passwordIsCorrect;
     }
-
+    public void setMessage(String message) {
+        Message = message;
+    }
     public void setUserDTO(com.backend.shopee.shopee_backend.application.dto.UserDTO userDTO) {
         UserDTO = userDTO;
     }

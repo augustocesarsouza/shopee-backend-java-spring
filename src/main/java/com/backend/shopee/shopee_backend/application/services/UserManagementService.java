@@ -9,6 +9,7 @@ import com.backend.shopee.shopee_backend.application.dto.validations.userValidat
 import com.backend.shopee.shopee_backend.application.dto.validations.userValidationDTOs.UserUpdateFillDTOValidator;
 import com.backend.shopee.shopee_backend.application.services.interfaces.IUserManagementService;
 import com.backend.shopee.shopee_backend.application.util.interfaces.IBCryptPasswordEncoderUtil;
+import com.backend.shopee.shopee_backend.data.cloudinaryUtil.CloudinaryCreate;
 import com.backend.shopee.shopee_backend.data.utilityExternal.Interface.ICloudinaryUti;
 import com.backend.shopee.shopee_backend.domain.entities.User;
 import com.backend.shopee.shopee_backend.domain.repositories.IUserRepository;
@@ -52,6 +53,44 @@ public class UserManagementService implements IUserManagementService {
             if(user == null){
                 return ResultService.Fail("not found");
             }
+
+            var userMap = modelMapper.map(user, UserDTO.class);
+            return ResultService.Ok(userMap); // testar isso para ver se o "Mapper" vai funcionar
+        }catch (Exception ex){
+            return ResultService.Fail(ex.getMessage());
+        }
+    }
+
+    @Override
+    @Transactional
+    public ResultService<UserDTO> findByIdOnly(String userId) {
+        try {
+            User user = userRepository.GetUserById(UUID.fromString(userId));
+
+            if(user == null){
+                return ResultService.Fail("not found");
+            }
+
+            user.setPasswordHash(null);
+
+            var userMap = modelMapper.map(user, UserDTO.class);
+            return ResultService.Ok(userMap); // testar isso para ver se o "Mapper" vai funcionar
+        }catch (Exception ex){
+            return ResultService.Fail(ex.getMessage());
+        }
+    }
+
+    @Override
+    @Transactional
+    public ResultService<UserDTO> VerifyWhetherUserExist(UUID userId) {
+        try {
+            User user = userRepository.GetUserByIdForDeleteImg(userId);
+
+            if(user == null){
+                return ResultService.Fail("not found");
+            }
+
+            user.setPasswordHash(null);
 
             var userMap = modelMapper.map(user, UserDTO.class);
             return ResultService.Ok(userMap); // testar isso para ver se o "Mapper" vai funcionar
@@ -180,13 +219,15 @@ public class UserManagementService implements IUserManagementService {
             if(userToUpdate == null)
                 return ResultService.Fail("Error UserToUpdate Is null");
 
-            if(userUpdateAllDTOValidator.getBase64StringImage() != null){
-                var deleteFound = cloudinaryUti.DeleteFileCloudinaryExtractingPublicIdFromUrlList(userToUpdate.getUserImage());
+            if(userUpdateAllDTOValidator.getBase64StringImage() != null && !userUpdateAllDTOValidator.getBase64StringImage().isEmpty()){
+                if(userToUpdate.getUserImage() != null && !userToUpdate.getUserImage().isEmpty()){
+                    var deleteFound = cloudinaryUti.DeleteFileCloudinaryExtractingPublicIdFromUrlList(userToUpdate.getUserImage());
 
-                if(!deleteFound.getDeleteSuccessfully())
-                    return ResultService.Fail(deleteFound.getMessage());
+                    if(!deleteFound.getDeleteSuccessfully())
+                        return ResultService.Fail(deleteFound.getMessage());
+                }
 
-                var resultCreate = cloudinaryUti.CreateMedia(userUpdateAllDTOValidator.getBase64StringImage(), "img-user", 320, 320);
+                CloudinaryCreate resultCreate = cloudinaryUti.CreateMedia(userUpdateAllDTOValidator.getBase64StringImage(), "img-user", 320, 320);
 
                 if (!resultCreate.getCreatedSuccessfully())
                     return ResultService.Fail("Invalid media type. Only images and videos are supported");
@@ -208,14 +249,22 @@ public class UserManagementService implements IUserManagementService {
                 return ResultService.Ok(modelMapper.map(updateUser, UserDTO.class));
             }
 
-            return ResultService.Fail("Error Base64StringImage Is null");
+            userToUpdate.setName(userUpdateAllDTOValidator.getName());
+            userToUpdate.setEmail(userUpdateAllDTOValidator.getEmail());
+            userToUpdate.setGender(userUpdateAllDTOValidator.getGender());
+            userToUpdate.setPhone(userUpdateAllDTOValidator.getPhone());
+
+            var updateUser = userRepository.update(userToUpdate);
+
+            return ResultService.Ok(modelMapper.map(updateUser, UserDTO.class));
+//            return ResultService.Fail("Error Base64StringImage Is null");
         }catch (Exception ex){
             return ResultService.Fail(ex.getMessage());
         }
     }
 
-    @Override // no frontend aqui nesse component "FirstStepCreateAccount" tem como eu fiz o codigo e tal sem precisar mandar para celular nessa func "onClickResendCode"
-    public ResultService<UserDTO> UpdateUser(UserUpdateFillDTOValidator userUpdateFillDTOValidator, BindingResult resultValid) {
+    @Override
+    public ResultService<UserDTO> UpdateCpfAndBirthDayUser(UserUpdateFillDTOValidator userUpdateFillDTOValidator, BindingResult resultValid) {
         try  {
             if(userUpdateFillDTOValidator == null)
                 return ResultService.Fail("Error DTO is null");
@@ -262,12 +311,16 @@ public class UserManagementService implements IUserManagementService {
             if(userDelete == null)
                 return ResultService.Fail("User not found");
 
-            var deleteFound = cloudinaryUti.DeleteFileCloudinaryExtractingPublicIdFromUrlList(userDelete.getUserImage());
+            if(userDelete.getUserImage() != null){
+                var deleteFound = cloudinaryUti.DeleteFileCloudinaryExtractingPublicIdFromUrlList(userDelete.getUserImage());
 
-            if(!deleteFound.getDeleteSuccessfully())
-                return ResultService.Fail(deleteFound.getMessage());
+                if(!deleteFound.getDeleteSuccessfully())
+                    return ResultService.Fail(deleteFound.getMessage());
+            }
 
             var userDeleteSuccessfully = userRepository.delete(userDelete.getId());
+
+            userDeleteSuccessfully.setPasswordHash(null);
 
             return ResultService.Ok(modelMapper.map(userDeleteSuccessfully, UserDTO.class));
 

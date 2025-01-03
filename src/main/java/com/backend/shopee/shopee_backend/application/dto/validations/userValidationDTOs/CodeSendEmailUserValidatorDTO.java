@@ -14,16 +14,23 @@ public class CodeSendEmailUserValidatorDTO {
     @NotEmpty(message = "Email should not be empty")
     @JsonProperty("email")
     private String Email;
+    @JsonProperty("code")
     private String Code;
+    @JsonProperty("codeSendToEmailSuccessfully")
     private Boolean CodeSendToEmailSuccessfully;
+    @JsonProperty("userAlreadyExist")
     private Boolean UserAlreadyExist;
+    @JsonProperty("emailAlreadyRegistered")
+    private Boolean EmailAlreadyRegistered;
 
-    public CodeSendEmailUserValidatorDTO(String name, String email, String code, Boolean codeSendToEmailSuccessfully, Boolean userAlreadyExist) {
+    public CodeSendEmailUserValidatorDTO(String name, String email, String code, Boolean codeSendToEmailSuccessfully, Boolean userAlreadyExist,
+                                         Boolean emailAlreadyRegistered) {
         Name = name;
         Email = email;
         Code = code;
         CodeSendToEmailSuccessfully = codeSendToEmailSuccessfully;
         UserAlreadyExist = userAlreadyExist;
+        EmailAlreadyRegistered = emailAlreadyRegistered;
     }
 
     public CodeSendEmailUserValidatorDTO() {
@@ -47,5 +54,9 @@ public class CodeSendEmailUserValidatorDTO {
 
     public Boolean getUserAlreadyExist() {
         return UserAlreadyExist;
+    }
+
+    public Boolean getEmailAlreadyRegistered() {
+        return EmailAlreadyRegistered;
     }
 }

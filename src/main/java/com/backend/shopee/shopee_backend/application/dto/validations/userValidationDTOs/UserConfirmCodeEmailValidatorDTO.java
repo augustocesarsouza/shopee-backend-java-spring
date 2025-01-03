@@ -16,14 +16,16 @@ public class UserConfirmCodeEmailValidatorDTO {
     @Size(min = 36, message = "idGuid should have at last 36 characters")
     @JsonProperty("userId")
     private String UserId;
-    @NotEmpty(message = "Email should not be empty")
     @JsonProperty("email")
     private String Email;
+    @JsonProperty("phone")
+    private String Phone;
 
-    public UserConfirmCodeEmailValidatorDTO(String code, String userId, String email) {
+    public UserConfirmCodeEmailValidatorDTO(String code, String userId, String email, String phone) {
         Code = code;
         UserId = userId;
         Email = email;
+        Phone = phone;
     }
 
     public UserConfirmCodeEmailValidatorDTO() {
@@ -39,5 +41,9 @@ public class UserConfirmCodeEmailValidatorDTO {
 
     public String getEmail() {
         return Email;
+    }
+
+    public String getPhone() {
+        return Phone;
     }
 }

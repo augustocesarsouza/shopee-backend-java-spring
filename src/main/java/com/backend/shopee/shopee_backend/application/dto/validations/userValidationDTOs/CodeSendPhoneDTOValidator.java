@@ -9,13 +9,18 @@ public class CodeSendPhoneDTOValidator {
     @NotEmpty(message = "Name should not be empty")
     @JsonProperty("phone")
     private String Phone;
+    @NotEmpty(message = "UserId should not be empty")
+    @JsonProperty("userId")
+    private String UserId;
     private String Code;
     private Boolean CodeSendToPhone;
+    private Boolean PhoneAlreadyRegistered;
 
-    public CodeSendPhoneDTOValidator(String phone, String code, Boolean codeSendToPhone) {
+    public CodeSendPhoneDTOValidator(String phone, String code, Boolean codeSendToPhone, Boolean phoneAlreadyRegistered) {
         Phone = phone;
         Code = code;
         CodeSendToPhone = codeSendToPhone;
+        PhoneAlreadyRegistered = phoneAlreadyRegistered;
     }
 
     public CodeSendPhoneDTOValidator() {
@@ -33,6 +38,14 @@ public class CodeSendPhoneDTOValidator {
         return CodeSendToPhone;
     }
 
+    public Boolean getPhoneAlreadyRegistered() {
+        return PhoneAlreadyRegistered;
+    }
+
+    public String getUserId() {
+        return UserId;
+    }
+
     public void setPhone(String phone) {
         Phone = phone;
     }
@@ -43,5 +56,13 @@ public class CodeSendPhoneDTOValidator {
 
     public void setCodeSendToPhone(Boolean codeSendToPhone) {
         CodeSendToPhone = codeSendToPhone;
+    }
+
+    public void setPhoneAlreadyRegistered(Boolean phoneAlreadyRegistered) {
+        PhoneAlreadyRegistered = phoneAlreadyRegistered;
+    }
+
+    public void setUserId(String userId) {
+        UserId = userId;
     }
 }

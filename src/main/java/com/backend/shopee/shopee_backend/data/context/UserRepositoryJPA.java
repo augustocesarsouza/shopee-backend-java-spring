@@ -56,10 +56,10 @@ public interface UserRepositoryJPA extends JpaRepository<User, UUID> {
             "WHERE x.Id = :userId")
     User GetUserByIdInfoEmailPasswordHash(UUID userId);
     @Query("SELECT new com.backend.shopee.shopee_backend.domain.entities." +
-            "User(x.Id, null, x.Email, null, null, x.PasswordHash, null, null, null, null) " +
+            "User(x.Id, null, x.Email, null, x.Phone, x.PasswordHash, null, null, null, null) " +
             "FROM User AS x " +
             "WHERE x.Phone = :phone")
-    User GetUserByPhoneInfoEmailPasswordHash(String phone);
+    User GetUserByPhoneToUserAuthentication(String phone);
 }
 
 //User(UUID id, String name, String email, String gender, String phone, String passwordHash,

@@ -23,7 +23,7 @@ public class TokenGenerator implements ITokenGenerator {
     public InfoErrors<TokenOutValue> generatorTokenUser(User user) {
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
         LocalDateTime currentUtcDateTime = LocalDateTime.now(ZoneOffset.UTC);
-        LocalDateTime expires = currentUtcDateTime.plusHours(1);
+        LocalDateTime expires = currentUtcDateTime.plusHours(5);
         Date expiresDate = Date.from(expires.toInstant(ZoneOffset.UTC));
 
         if(user == null)

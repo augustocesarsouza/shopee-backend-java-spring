@@ -18,7 +18,7 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public User GetUserById(UUID id) {
-        return userRepositoryJPA.findById(id).orElse(null);
+        return userRepositoryJPA.GetUserById(id);
     }
 
     @Override
@@ -63,8 +63,8 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public User GetUserByPhoneInfoEmailPasswordHash(String phone) {
-        return userRepositoryJPA.GetUserByPhoneInfoEmailPasswordHash(phone);
+    public User GetUserByPhoneToUserAuthentication(String phone) {
+        return userRepositoryJPA.GetUserByPhoneToUserAuthentication(phone);
     }
 
     @Override

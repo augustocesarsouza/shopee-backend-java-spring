@@ -30,6 +30,8 @@ public class UserDTO {
     private String Base64ImageUser;
     @JsonProperty("token")
     private String Token;
+    @JsonProperty("gender")
+    private String Gender;
 
     public UserDTO() {
     }
@@ -132,7 +134,15 @@ public class UserDTO {
         Phone = phone;
     }
 
+    public void setGender(String gender) {
+        Gender = gender;
+    }
+
     public String getPhone() {
         return Phone;
+    }
+
+    public String getGender() {
+        return Gender;
     }
 }
