@@ -11,11 +11,11 @@ import java.util.UUID;
 public class UserCreateValidatorDTO {
     @JsonProperty("id")
     private UUID Id;
-    @NotEmpty(message = "name should not be empty")
+    @NotEmpty(message = "phone should not be empty")
     @JsonProperty("phone")
     private String Phone;
-    @NotEmpty(message = "email should not be empty")
-    @Size(min = 8, message = "email should have at last 5 characters")
+    @NotEmpty(message = "password should not be empty")
+    @Size(min = 8, message = "password should have at last 8 characters")
     @JsonProperty("password")
     private String Password;
 
@@ -23,6 +23,13 @@ public class UserCreateValidatorDTO {
     private String Base64ImageUser;
 
     public UserCreateValidatorDTO() {
+    }
+
+    public UserCreateValidatorDTO(UUID id, String phone, String password, String base64ImageUser) {
+        Id = id;
+        Phone = phone;
+        Password = password;
+        Base64ImageUser = base64ImageUser;
     }
 
     public UUID getId() {

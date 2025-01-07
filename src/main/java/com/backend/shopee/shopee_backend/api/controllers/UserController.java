@@ -53,6 +53,17 @@ public class UserController {
         return ResponseEntity.badRequest().body(result);
     }
 
+    @GetMapping("/public/user/verify-password/{phone}/{password}")
+    public ResponseEntity<ResultService<UserLoginDTO>> VerifyPasswordUser(@PathVariable String phone, @PathVariable String password){
+        var result = userAuthenticationService.VerifyPasswordUser(phone, password);
+
+        if(result.IsSuccess){
+            return ResponseEntity.ok(result);
+        }
+
+        return ResponseEntity.badRequest().body(result);
+    }
+
     @GetMapping("/public/user/login/{phone}/{password}")
     public ResponseEntity<ResultService<UserLoginDTO>> login(@PathVariable String phone, @PathVariable String password){
         var result = userAuthenticationService.Login(phone, password);

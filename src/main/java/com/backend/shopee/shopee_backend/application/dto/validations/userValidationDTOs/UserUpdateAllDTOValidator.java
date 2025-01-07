@@ -29,7 +29,8 @@ public class UserUpdateAllDTOValidator {
     @JsonProperty("base64StringImage")
     private String Base64StringImage;
 
-    public UserUpdateAllDTOValidator(String userId, String name, String email, String gender, String phone, String cpf, LocalDateTime birthDate, String base64StringImage) {
+    public UserUpdateAllDTOValidator(String userId, String name, String email, String gender, String phone,
+                                     String cpf, LocalDateTime birthDate, String base64StringImage) {
         UserId = userId;
         Name = name;
         Email = email;

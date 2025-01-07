@@ -32,16 +32,16 @@ public class UserManagementService implements IUserManagementService {
     private final IValidateErrorsDTO validateErrorsDTO;
     private final IBCryptPasswordEncoderUtil bCryptPasswordEncoder;
     private final ICloudinaryUti cloudinaryUti;
-    @Autowired
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     @Autowired
     public UserManagementService(IUserRepository userRepository, IValidateErrorsDTO validateErrorsDTO, IBCryptPasswordEncoderUtil bCryptPasswordEncoder,
-                                 ICloudinaryUti cloudinaryUti) {
+                                 ICloudinaryUti cloudinaryUti, ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.validateErrorsDTO = validateErrorsDTO;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.cloudinaryUti = cloudinaryUti;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -112,7 +112,7 @@ public class UserManagementService implements IUserManagementService {
         }
 
         User userCreate = new User();
-        // fazer login, tem que testar o "DELETE" quando deletar um registro e deletar a imagem, porque tem que retirar da img o "publicID"
+
         try {
             String passwordEncoder = bCryptPasswordEncoder.encodePassword(userCreateValidatorDTO.getPassword());
             UUID uuid_user_id = UUID.randomUUID();
@@ -169,16 +169,16 @@ public class UserManagementService implements IUserManagementService {
     @Override
     public ResultService<UserPasswordUpdateDTO> ChangePasswordUser(UserChangePasswordDTO userChangePasswordDTO, BindingResult resultValid) {
         if(userChangePasswordDTO == null)
-            return ResultService.Fail("obj null");
+            return ResultService.Fail("DTO Is Null");
+
+        if(resultValid.hasErrors()){
+            var errorsDTO = resultValid.getAllErrors();
+            var errors = validateErrorsDTO.ValidateDTO(errorsDTO);
+
+            return ResultService.RequestError("error validate DTO", errors);
+        }
 
         try {
-            if(resultValid.hasErrors()){
-                var errorsDTO = resultValid.getAllErrors();
-                var errors = validateErrorsDTO.ValidateDTO(errorsDTO);
-
-                return ResultService.RequestError("error validate DTO", errors);
-            }
-
             var user = userRepository.GetUserByPhoneInfoUpdate(userChangePasswordDTO.getPhone());
 
             if(user == null)
@@ -204,16 +204,16 @@ public class UserManagementService implements IUserManagementService {
     @Override
     public ResultService<UserDTO> UpdateUserAll(UserUpdateAllDTOValidator userUpdateAllDTOValidator, BindingResult resultValid) {
         if(userUpdateAllDTOValidator == null)
-            return ResultService.Fail("obj null");
+            return ResultService.Fail("DTO Is Null");
+
+        if(resultValid.hasErrors()){
+            var errorsDTO = resultValid.getAllErrors();
+            var errors = validateErrorsDTO.ValidateDTO(errorsDTO);
+
+            return ResultService.RequestError("error validate DTO", errors);
+        }
 
         try {
-            if(resultValid.hasErrors()){
-                var errorsDTO = resultValid.getAllErrors();
-                var errors = validateErrorsDTO.ValidateDTO(errorsDTO);
-
-                return ResultService.RequestError("error validate DTO", errors);
-            }
-
             var userToUpdate = userRepository.GetUserById(UUID.fromString(userUpdateAllDTOValidator.getUserId()));
 
             if(userToUpdate == null)
@@ -246,7 +246,9 @@ public class UserManagementService implements IUserManagementService {
                 if(updateUser == null)
                     return ResultService.Fail("error updateUser is null");
 
-                return ResultService.Ok(modelMapper.map(updateUser, UserDTO.class));
+                var updateUserDTO = modelMapper.map(updateUser, UserDTO.class);
+
+                return ResultService.Ok(updateUserDTO);
             }
 
             userToUpdate.setName(userUpdateAllDTOValidator.getName());
@@ -256,7 +258,9 @@ public class UserManagementService implements IUserManagementService {
 
             var updateUser = userRepository.update(userToUpdate);
 
-            return ResultService.Ok(modelMapper.map(updateUser, UserDTO.class));
+            var updateUserDTO = modelMapper.map(updateUser, UserDTO.class);
+
+            return ResultService.Ok(updateUserDTO);
 //            return ResultService.Fail("Error Base64StringImage Is null");
         }catch (Exception ex){
             return ResultService.Fail(ex.getMessage());

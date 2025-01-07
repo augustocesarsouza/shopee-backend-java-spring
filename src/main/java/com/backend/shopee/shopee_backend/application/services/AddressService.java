@@ -24,7 +24,7 @@ public class AddressService implements IAddressService {
     private final IAddressRepository addressRepository;
     private final IUserManagementService userManagementService;
     private final IValidateErrorsDTO validateErrorsDTO;
-    private final ModelMapper modelMapper; // testar o map
+    private final ModelMapper modelMapper;
 
     @Autowired
     public AddressService(IAddressRepository addressRepository, IUserManagementService userManagementService, IValidateErrorsDTO validateErrorsDTO, ModelMapper modelMapper) {

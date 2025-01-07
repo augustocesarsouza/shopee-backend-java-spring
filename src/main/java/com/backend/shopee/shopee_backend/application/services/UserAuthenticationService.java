@@ -68,7 +68,8 @@ public class UserAuthenticationService implements IUserAuthenticationService {
 
     @Override
     public ResultService<CodeSendPhoneDTOValidator> SendCodePhone(CodeSendPhoneDTOValidator codeSendPhoneDTOValidator, BindingResult result) {
-        if(codeSendPhoneDTOValidator == null) return ResultService.Fail("Error DTO Informed is null");
+        if(codeSendPhoneDTOValidator == null)
+            return ResultService.Fail("Error DTO Informed is null");
 
         if(result.hasErrors()){
             var errorsDTO = result.getAllErrors();
@@ -104,7 +105,8 @@ public class UserAuthenticationService implements IUserAuthenticationService {
 
     @Override
     public ResultService<CodeSendEmailUserValidatorDTO> SendCodeEmail(CodeSendEmailUserValidatorDTO codeSendEmailUserValidatorDTO, BindingResult result) {
-        if(codeSendEmailUserValidatorDTO == null) return ResultService.Fail("Error DTO Informed is null");
+        if(codeSendEmailUserValidatorDTO == null)
+            return ResultService.Fail("Error DTO Informed is null");
 
         if(result.hasErrors()){
             var errorsDTO = result.getAllErrors();
@@ -116,7 +118,8 @@ public class UserAuthenticationService implements IUserAuthenticationService {
         try {
             User user = userRepository.GetUserByName(codeSendEmailUserValidatorDTO.getName());
 
-            if (user == null) return ResultService.Fail("Error user info login is null");
+            if (user == null)
+                return ResultService.Fail("Error user info login is null");
 
 //            if(user.getEmail() != null){
 //                return ResultService.Ok(new CodeSendEmailUserValidatorDTO(null, null, null,
@@ -148,7 +151,6 @@ public class UserAuthenticationService implements IUserAuthenticationService {
 
              return ResultService.Ok(new CodeSendEmailUserValidatorDTO(null, null, String.valueOf(randomCode),
                     true, false, false));
-
         }catch (Exception ex){
             return ResultService.Fail(ex.getMessage());
         }
@@ -156,7 +158,8 @@ public class UserAuthenticationService implements IUserAuthenticationService {
 
     @Override
     public ResultService<UserDTO> VerifyEmailAlreadySetUp(UserConfirmCodeEmailValidatorDTO userConfirmCodeEmailValidatorDTO, BindingResult result) {
-        if(userConfirmCodeEmailValidatorDTO == null) return ResultService.Fail("Error DTO Informed is null");
+        if(userConfirmCodeEmailValidatorDTO == null)
+            return ResultService.Fail("Error DTO Informed is null");
 
         if(result.hasErrors()){
             var errorsDTO = result.getAllErrors();
@@ -181,7 +184,9 @@ public class UserAuthenticationService implements IUserAuthenticationService {
                     var userUpdate = userRepository.update(user);
                     dictionaryCode.removeKeyDictionary(String.valueOf(userUpdate.getId()));
 
-                    return ResultService.Ok(modelMapper.map(userUpdate, UserDTO.class));
+                    var userToReturn = modelMapper.map(userUpdate, UserDTO.class);
+
+                    return ResultService.Ok(userToReturn);
                 }
 
                 if(userConfirmCodeEmailValidatorDTO.getPhone() != null){
@@ -194,7 +199,8 @@ public class UserAuthenticationService implements IUserAuthenticationService {
                 }
 
                 dictionaryCode.removeKeyDictionary(userId);
-                return ResultService.Ok(modelMapper.map(user, UserDTO.class));
+                var userDtoMapper = modelMapper.map(user, UserDTO.class);
+                return ResultService.Ok(userDtoMapper);
             }else {
                 return ResultService.Fail("Error Code Not Found");
             }
@@ -229,7 +235,7 @@ public class UserAuthenticationService implements IUserAuthenticationService {
 
             userAuth.setName(user.getName());
             userAuth.setPasswordHash(null);
-            UserDTO userDTO = modelMapper.map(userAuth, UserDTO.class);
+            var userDTO = modelMapper.map(userAuth, UserDTO.class);
 
             if(userDTO == null)
                 return ResultService.Fail("error in null class mapping");
@@ -269,6 +275,7 @@ public class UserAuthenticationService implements IUserAuthenticationService {
             return ResultService.Ok(userLoginDTO);
         }catch (Exception ex){
             userLoginDTO.setPasswordIsCorrect(false);
+            userLoginDTO.setMessage(ex.getMessage());
             userLoginDTO.setUserDTO(null);
             return ResultService.Fail(userLoginDTO);
         }
