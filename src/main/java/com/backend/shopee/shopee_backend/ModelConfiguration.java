@@ -2,10 +2,12 @@ package com.backend.shopee.shopee_backend;
 
 import com.backend.shopee.shopee_backend.application.dto.AddressDTO;
 import com.backend.shopee.shopee_backend.application.dto.PromotionDTO;
+import com.backend.shopee.shopee_backend.application.dto.PromotionUserDTO;
 import com.backend.shopee.shopee_backend.application.dto.UserDTO;
 import com.backend.shopee.shopee_backend.application.dto.validations.AddressValidationDTOs.AddressUpdateDTOValidator;
 import com.backend.shopee.shopee_backend.domain.entities.Address;
 import com.backend.shopee.shopee_backend.domain.entities.Promotion;
+import com.backend.shopee.shopee_backend.domain.entities.PromotionUser;
 import com.backend.shopee.shopee_backend.domain.entities.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.modelmapper.ModelMapper;
@@ -80,6 +82,25 @@ public class ModelConfiguration {
                     map().setListImgInner(source.getListImgInner());
                 }
             });
+
+        modelMapper.addMappings(new PropertyMap<PromotionUser, PromotionUserDTO>() {
+            @Override
+            protected void configure() {
+                map().setId(source.getId());
+                map().setPromotionId(source.getPromotionId());
+                map().setUserId(source.getUserId());
+
+                when(Objects::nonNull)
+                        .map(source.getPromotion(), destination.getPromotionDTO());
+
+                when(Objects::nonNull)
+                        .map(source.getUser(), destination.getUserDTO());
+
+//                    map().setUserDTO(new UserDTO(source.getUser().getId(), source.getUser().getName(), source.getUser().getEmail(),
+//                        source.getUser().getPasswordHash(), source.getUser().getCpf(), source.getUser().getBirthDate(), source.getUser().getConfirmEmail(),
+//                        source.getUser().getUserImage(), null, null));
+            }
+        });
 
             return modelMapper;
     }
