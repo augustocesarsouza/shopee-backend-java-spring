@@ -6,18 +6,18 @@ import jakarta.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "tb_promotion_users", schema = "public")
-public class PromotionUser {
+@Table(name = "tb_shopee_update_users", schema = "public")
+public class ShopeeUpdateUser {
     @jakarta.persistence.Id
-    @Column(name = "promotion_users_id")
+    @Column(name = "shopee_update_users_id")
     @JsonProperty("id")
     private UUID Id;
-    @Column(name = "promotion_id")
-    @JsonProperty("promotionId")
-    private UUID PromotionId;
+    @Column(name = "shopee_updates_id")
+    @JsonProperty("shopeeUpdateId")
+    private UUID ShopeeUpdateId;
     @ManyToOne
-    @JoinColumn(name = "promotion_id", insertable = false, updatable = false)
-    private Promotion Promotion;
+    @JoinColumn(name = "shopee_updates_id", insertable = false, updatable = false)
+    private ShopeeUpdate ShopeeUpdate;
     @Column(name = "user_id")
     @JsonProperty("userId")
     private UUID UserId;
@@ -25,27 +25,27 @@ public class PromotionUser {
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User User;
 
-    public PromotionUser(UUID id, UUID promotionId, Promotion promotion, UUID userId, User user) {
+    public ShopeeUpdateUser(UUID id, UUID shopeeUpdateId, ShopeeUpdate shopeeUpdate, UUID userId, User user) {
         Id = id;
-        PromotionId = promotionId;
-        Promotion = promotion;
+        ShopeeUpdateId = shopeeUpdateId;
+        ShopeeUpdate = shopeeUpdate;
         UserId = userId;
         User = user;
     }
 
-    public PromotionUser() {
+    public ShopeeUpdateUser() {
     }
 
     public UUID getId() {
         return Id;
     }
 
-    public UUID getPromotionId() {
-        return PromotionId;
+    public UUID getShopeeUpdateId() {
+        return ShopeeUpdateId;
     }
 
-    public Promotion getPromotion() {
-        return Promotion;
+    public ShopeeUpdate getShopeeUpdate() {
+        return ShopeeUpdate;
     }
 
     public UUID getUserId() {
@@ -60,12 +60,12 @@ public class PromotionUser {
         Id = id;
     }
 
-    public void setPromotionId(UUID promotionId) {
-        PromotionId = promotionId;
+    public void setShopeeUpdateId(UUID shopeeUpdateId) {
+        ShopeeUpdateId = shopeeUpdateId;
     }
 
-    public void setPromotion(Promotion promotion) {
-        Promotion = promotion;
+    public void setShopeeUpdate(ShopeeUpdate shopeeUpdate) {
+        ShopeeUpdate = shopeeUpdate;
     }
 
     public void setUserId(UUID userId) {

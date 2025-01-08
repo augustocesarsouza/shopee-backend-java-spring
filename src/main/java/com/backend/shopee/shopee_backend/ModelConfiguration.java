@@ -107,6 +107,22 @@ public class ModelConfiguration {
                 }
             });
 
+        modelMapper.addMappings(new PropertyMap<ShopeeUpdateUser, ShopeeUpdateUserDTO>() {
+            @Override
+            protected void configure() {
+                map().setId(source.getId());
+                map().setUserId(source.getUserId());
+                map().setShopeeUpdateId(source.getShopeeUpdateId());
+
+                when(Objects::nonNull)
+                        .map(source.getShopeeUpdate(), destination.getShopeeUpdateDTO());
+
+                when(Objects::nonNull)
+                        .map(source.getUser(), destination.getUserDTO());
+
+            }
+        });
+
             return modelMapper;
     }
 }
