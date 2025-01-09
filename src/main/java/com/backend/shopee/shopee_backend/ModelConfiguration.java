@@ -4,6 +4,7 @@ import com.backend.shopee.shopee_backend.application.dto.*;
 import com.backend.shopee.shopee_backend.application.dto.validations.AddressValidationDTOs.AddressUpdateDTOValidator;
 import com.backend.shopee.shopee_backend.domain.entities.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Column;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.context.annotation.Bean;
@@ -107,19 +108,32 @@ public class ModelConfiguration {
                 }
             });
 
-        modelMapper.addMappings(new PropertyMap<ShopeeUpdateUser, ShopeeUpdateUserDTO>() {
+            modelMapper.addMappings(new PropertyMap<ShopeeUpdateUser, ShopeeUpdateUserDTO>() {
+                @Override
+                protected void configure() {
+                    map().setId(source.getId());
+                    map().setUserId(source.getUserId());
+                    map().setShopeeUpdateId(source.getShopeeUpdateId());
+
+                    when(Objects::nonNull)
+                            .map(source.getShopeeUpdate(), destination.getShopeeUpdateDTO());
+
+                    when(Objects::nonNull)
+                            .map(source.getUser(), destination.getUserDTO());
+                }
+            });
+
+        modelMapper.addMappings(new PropertyMap<Cupon, CuponDTO>() {
             @Override
             protected void configure() {
                 map().setId(source.getId());
-                map().setUserId(source.getUserId());
-                map().setShopeeUpdateId(source.getShopeeUpdateId());
-
-                when(Objects::nonNull)
-                        .map(source.getShopeeUpdate(), destination.getShopeeUpdateDTO());
-
-                when(Objects::nonNull)
-                        .map(source.getUser(), destination.getUserDTO());
-
+                map().setFirstText(source.getFirstText());
+                map().setSecondText(source.getSecondText());
+                map().setThirdText(source.getThirdText());
+                map().setDateValidateCupon(source.getDateValidateCupon());
+                map().setQuantityCupons(source.getQuantityCupons());
+                map().setWhatCuponNumber(source.getWhatCuponNumber());
+                map().setSecondImg(source.getSecondImg());
             }
         });
 
