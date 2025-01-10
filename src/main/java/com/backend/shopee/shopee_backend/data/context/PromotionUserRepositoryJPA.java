@@ -6,10 +6,12 @@ import com.backend.shopee.shopee_backend.application.dto.UserDTO;
 import com.backend.shopee.shopee_backend.domain.entities.PromotionUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.UUID;
 
+@Repository
 public interface PromotionUserRepositoryJPA extends JpaRepository<PromotionUser, UUID> {
     @Query("SELECT new com.backend.shopee.shopee_backend.application.dto." +
             "PromotionUserDTO(null, null, new com.backend.shopee.shopee_backend.application.dto.PromotionDTO" +

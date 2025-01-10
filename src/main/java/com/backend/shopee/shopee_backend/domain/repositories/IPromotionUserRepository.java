@@ -1,7 +1,6 @@
 package com.backend.shopee.shopee_backend.domain.repositories;
 
 import com.backend.shopee.shopee_backend.application.dto.PromotionUserDTO;
-import com.backend.shopee.shopee_backend.domain.entities.Promotion;
 import com.backend.shopee.shopee_backend.domain.entities.PromotionUser;
 
 import java.util.List;

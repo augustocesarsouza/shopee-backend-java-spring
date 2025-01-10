@@ -123,19 +123,34 @@ public class ModelConfiguration {
                 }
             });
 
-        modelMapper.addMappings(new PropertyMap<Cupon, CuponDTO>() {
-            @Override
-            protected void configure() {
-                map().setId(source.getId());
-                map().setFirstText(source.getFirstText());
-                map().setSecondText(source.getSecondText());
-                map().setThirdText(source.getThirdText());
-                map().setDateValidateCupon(source.getDateValidateCupon());
-                map().setQuantityCupons(source.getQuantityCupons());
-                map().setWhatCuponNumber(source.getWhatCuponNumber());
-                map().setSecondImg(source.getSecondImg());
-            }
-        });
+            modelMapper.addMappings(new PropertyMap<Cupon, CuponDTO>() {
+                @Override
+                protected void configure() {
+                    map().setId(source.getId());
+                    map().setFirstText(source.getFirstText());
+                    map().setSecondText(source.getSecondText());
+                    map().setThirdText(source.getThirdText());
+                    map().setDateValidateCupon(source.getDateValidateCupon());
+                    map().setQuantityCupons(source.getQuantityCupons());
+                    map().setWhatCuponNumber(source.getWhatCuponNumber());
+                    map().setSecondImg(source.getSecondImg());
+                }
+            });
+
+            modelMapper.addMappings(new PropertyMap<UserCupon, UserCuponDTO>() {
+                @Override
+                protected void configure() {
+                    map().setId(source.getId());
+                    map().setCuponId(source.getCuponId());
+                    map().setUserId(source.getUserId());
+
+                    when(Objects::nonNull)
+                            .map(source.getCupon(), destination.getCuponDTO());
+
+                    when(Objects::nonNull)
+                            .map(source.getUser(), destination.getUserDTO());
+                }
+            });
 
             return modelMapper;
     }

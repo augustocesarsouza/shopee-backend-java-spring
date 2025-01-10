@@ -4,10 +4,12 @@ import com.backend.shopee.shopee_backend.application.dto.ShopeeUpdateUserDTO;
 import com.backend.shopee.shopee_backend.domain.entities.ShopeeUpdateUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.UUID;
 
+@Repository
 public interface ShopeeUpdateUserRepositoryJPA extends JpaRepository<ShopeeUpdateUser, UUID> {
     @Query("SELECT new com.backend.shopee.shopee_backend.application.dto." +
             "ShopeeUpdateUserDTO(null, null, new com.backend.shopee.shopee_backend.application.dto.ShopeeUpdateDTO" +
