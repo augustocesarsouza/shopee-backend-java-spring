@@ -28,7 +28,7 @@ public class UserCuponController {
         this.userCuponService = userCuponService;
     }
 
-    @GetMapping("/public/user-cupon/get-all-cupon-by-user-id/{userId}")
+    @GetMapping("/user-cupon/get-all-cupon-by-user-id/{userId}")
     public ResponseEntity<ResultService<List<UserCuponDTO>>> GetByUserIdAll(@PathVariable String userId){
         var result = userCuponService.GetAllCuponByUserId(UUID.fromString(userId));
 
