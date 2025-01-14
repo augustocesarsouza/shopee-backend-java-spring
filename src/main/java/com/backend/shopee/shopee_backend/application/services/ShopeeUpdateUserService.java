@@ -27,7 +27,6 @@ public class ShopeeUpdateUserService implements IShopeeUpdateUserService {
         this.modelMapper = modelMapper;
     }
 
-
     @Override
     public ResultService<List<ShopeeUpdateUserDTO>> GetByUserIdAll(UUID userId) {
         try {
@@ -36,7 +35,6 @@ public class ShopeeUpdateUserService implements IShopeeUpdateUserService {
             if(shopeeUpdateUserDTOS == null)
                 return ResultService.Fail("not found promotion");
 
-//            var promotionMap = modelMapper.map(promotionDTO, PromotionDTO.class);
             return ResultService.Ok(shopeeUpdateUserDTOS);
         }catch (Exception ex){
             return ResultService.Fail(ex.getMessage());
@@ -59,8 +57,8 @@ public class ShopeeUpdateUserService implements IShopeeUpdateUserService {
         try  {
             UUID shopeeUpdateUserId = UUID.randomUUID();
 
-            var shopeeUpdateUser = new ShopeeUpdateUser(shopeeUpdateUserId, UUID.fromString(promotionUpdateUserCreateDTOValidator.getShopeeUpdateId()), null,
-                    UUID.fromString(promotionUpdateUserCreateDTOValidator.getUserId()), null);
+            var shopeeUpdateUser = new ShopeeUpdateUser(shopeeUpdateUserId, UUID.fromString(promotionUpdateUserCreateDTOValidator.getShopeeUpdateId()),
+                    null, UUID.fromString(promotionUpdateUserCreateDTOValidator.getUserId()), null);
 
             var createShopeeUpdateUser = shopeeUpdateUserRepository.create(shopeeUpdateUser);
 

@@ -196,7 +196,7 @@ public class UserManagementServiceTest {
                 .thenThrow(new RuntimeException(expectedErrorMessage));
 
         // Act
-        var result = userManagementService.VerifyWhetherUserExist(UUID.fromString(userId)   );
+        var result = userManagementService.VerifyWhetherUserExist(UUID.fromString(userId));
 
         // Assert
         assertFalse(result.IsSuccess);
@@ -270,7 +270,6 @@ public class UserManagementServiceTest {
 
     @Test
     public void error_validate_DTO_create(){
-        var userId = "bceff076-a1be-4c2b-a9e4-ff26ca4e2693";
         UserCreateValidatorDTO userCreateValidatorDTO = new UserCreateValidatorDTO();
         var resultError = new BeanPropertyBindingResult(userCreateValidatorDTO, "userCreateValidatorDTO");
 

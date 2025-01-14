@@ -30,7 +30,7 @@ public class PromotionUserController {
         this.promotionUserService = promotionUserService;
     }
 
-    @GetMapping("/public/promotion-user/get-by-user-id-all/{userId}")
+    @GetMapping("/public/promotion-user/get-by-user-id-all-to-promotion-user/{userId}")
     public ResponseEntity<ResultService<List<PromotionUserDTO>>> GetByUserIdAll(@PathVariable String userId){
         var result = promotionUserService.GetByUserIdAll(UUID.fromString(userId));
 

@@ -61,8 +61,8 @@ public class AddressService implements IAddressService {
                 return ResultService.Fail("not found");
             }
 
-            var addressMap = modelMapper.map(addressDTO, AddressDTO.class);
-            return ResultService.Ok(addressMap);
+//            var addressMap = modelMapper.map(addressDTO, AddressDTO.class);
+            return ResultService.Ok(addressDTO);
         }catch (Exception ex){
             return ResultService.Fail(ex.getMessage());
         }
@@ -78,14 +78,7 @@ public class AddressService implements IAddressService {
                 return ResultService.Fail("not found");
             }
 
-            List<AddressDTO> addressDTOList = new ArrayList<>();
-
-            addressDTO.forEach((el) -> {
-                var addressMap = modelMapper.map(el, AddressDTO.class);
-                addressDTOList.add(addressMap);
-            });
-
-            return ResultService.Ok(addressDTOList);
+            return ResultService.Ok(addressDTO);
         }catch (Exception ex){
             return ResultService.Fail(ex.getMessage());
         }
@@ -196,9 +189,10 @@ public class AddressService implements IAddressService {
             var addressUpdateDefault = addressRepository.GetAddressDefaultAllInfo();
             addressUpdateDefault.setDefaultAddress((byte)0);
 
-            var updateAddressDefault = addressRepository.updateOnlyDefaultAddress(modelMapper.map(addressUpdateDefault, Address.class));
+//            var updateAddressDefault = addressRepository.updateOnlyDefaultAddress(modelMapper.map(addressUpdateDefault, Address.class));
             int defaultAddress = updateOnlyDefaultDTOValidator.getDefaultAddress();
             addressDb.setDefaultAddress((byte) defaultAddress);
+
             var addressToUpdate = modelMapper.map(addressDb, Address.class);
 
             var updateAddress = addressRepository.update(addressToUpdate);

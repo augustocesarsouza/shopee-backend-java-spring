@@ -65,6 +65,9 @@ public class AddressCreateDTOValidator {
         SaveAs = saveAs;
     }
 
+    public AddressCreateDTOValidator() {
+    }
+
     public String getFullName() {
         return FullName;
     }

@@ -40,10 +40,9 @@ public class ShopeeUpdateService implements IShopeeUpdateService {
             ShopeeUpdateDTO shopeeUpdateDTO = shopeeUpdateRepository.GetById(shopeeUpdateId);
 
             if(shopeeUpdateDTO == null)
-                return ResultService.Fail("not found promotion");
+                return ResultService.Fail("not found shopeeUpdate");
 
-            var shopeeUpdateMap = modelMapper.map(shopeeUpdateDTO, ShopeeUpdateDTO.class);
-            return ResultService.Ok(shopeeUpdateMap);
+            return ResultService.Ok(shopeeUpdateDTO);
         }catch (Exception ex){
             return ResultService.Fail(ex.getMessage());
         }

@@ -23,14 +23,12 @@ public class CuponService implements ICuponService {
     private final ICuponRepository cuponRepository;
     private final IValidateErrorsDTO validateErrorsDTO;
     private final ModelMapper modelMapper;
-    private final ICloudinaryUti cloudinaryUti;
 
     @Autowired
-    public CuponService(ICuponRepository cuponRepository, IValidateErrorsDTO validateErrorsDTO, ModelMapper modelMapper, ICloudinaryUti cloudinaryUti) {
+    public CuponService(ICuponRepository cuponRepository, IValidateErrorsDTO validateErrorsDTO, ModelMapper modelMapper) {
         this.cuponRepository = cuponRepository;
         this.validateErrorsDTO = validateErrorsDTO;
         this.modelMapper = modelMapper;
-        this.cloudinaryUti = cloudinaryUti;
     }
 
     @Override
@@ -41,8 +39,7 @@ public class CuponService implements ICuponService {
             if(cuponDTO == null)
                 return ResultService.Fail("not found promotion");
 
-            var cuponMap = modelMapper.map(cuponDTO, CuponDTO.class);
-            return ResultService.Ok(cuponMap);
+            return ResultService.Ok(cuponDTO);
         }catch (Exception ex){
             return ResultService.Fail(ex.getMessage());
         }
@@ -82,7 +79,9 @@ public class CuponService implements ICuponService {
 
             var createCupon = cuponRepository.create(cupon);
 
-            return ResultService.Ok(modelMapper.map(createCupon, CuponDTO.class));
+            var cuponDTOCreateMap = modelMapper.map(createCupon, CuponDTO.class);
+
+            return ResultService.Ok(cuponDTOCreateMap);
 
         }catch (Exception ex){
             return ResultService.Fail(ex.getMessage());
@@ -99,7 +98,9 @@ public class CuponService implements ICuponService {
 
             var cuponDeleteSuccessfully = cuponRepository.delete(cuponDelete.getId());
 
-            return ResultService.Ok(modelMapper.map(cuponDeleteSuccessfully, CuponDTO.class));
+            var cupon = modelMapper.map(cuponDeleteSuccessfully, CuponDTO.class);
+
+            return ResultService.Ok(cupon);
 
         }catch (Exception ex){
             return ResultService.Fail(ex.getMessage());

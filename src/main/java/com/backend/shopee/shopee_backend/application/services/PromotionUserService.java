@@ -37,7 +37,6 @@ public class PromotionUserService implements IPromotionUserService {
             if(promotionUserDTOS == null)
                 return ResultService.Fail("not found promotionUser");
 
-//            var promotionUserDTOSMap = modelMapper.map(promotionUserDTOS, PromotionUserDTO.class);
             return ResultService.Ok(promotionUserDTOS);
         }catch (Exception ex){
             return ResultService.Fail(ex.getMessage());

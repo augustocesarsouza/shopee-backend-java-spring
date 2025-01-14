@@ -15,6 +15,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -48,8 +49,7 @@ public class PromotionService implements IPromotionService {
             if(promotionDTO == null)
                 return ResultService.Fail("not found promotion");
 
-            var promotionMap = modelMapper.map(promotionDTO, PromotionDTO.class);
-            return ResultService.Ok(promotionMap);
+            return ResultService.Ok(promotionDTO);
         }catch (Exception ex){
             return ResultService.Fail(ex.getMessage());
         }
@@ -62,8 +62,8 @@ public class PromotionService implements IPromotionService {
             return ResultService.Fail("error DTO Is Null");
 
         if(result.hasErrors()){
-            var errorsDTO = result.getAllErrors();
-            var errors = validateErrorsDTO.ValidateDTO(errorsDTO);
+            List<ObjectError> errorsDTO = result.getAllErrors();
+            List<ErrorValidation> errors = validateErrorsDTO.ValidateDTO(errorsDTO);
 
             return ResultService.RequestError("error validate DTO", errors);
         }
