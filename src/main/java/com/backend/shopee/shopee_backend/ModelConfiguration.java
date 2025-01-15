@@ -152,6 +152,16 @@ public class ModelConfiguration {
                 }
             });
 
+            modelMapper.addMappings(new PropertyMap<Categories, CategoriesDTO>() {
+                @Override
+                protected void configure() {
+                    map().setId(source.getId());
+                    map().setImgCategory(source.getImgCategory());
+                    map().setAltValue(source.getAltValue());
+                    map().setTitle(source.getTitle());
+                }
+            });
+
             return modelMapper;
     }
 }
