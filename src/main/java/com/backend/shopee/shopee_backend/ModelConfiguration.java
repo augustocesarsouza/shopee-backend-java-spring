@@ -162,6 +162,17 @@ public class ModelConfiguration {
                 }
             });
 
+            modelMapper.addMappings(new PropertyMap<ProductHighlight, ProductHighlightDTO>() {
+                @Override
+                protected void configure() {
+                    map().setId(source.getId());
+                    map().setTitle(source.getTitle());
+                    map().setImgProduct(source.getImgProduct());
+                    map().setImgTop(source.getImgTop());
+                    map().setQuantitySold(source.getQuantitySold());
+                }
+            });
+
             return modelMapper;
     }
 }

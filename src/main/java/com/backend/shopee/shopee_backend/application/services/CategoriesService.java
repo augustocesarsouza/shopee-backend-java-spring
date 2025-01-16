@@ -38,7 +38,7 @@ public class CategoriesService implements ICategoriesService {
             var categoriesDTO = categoriesRepository.GetCategoriesById(categoriesId);
 
             if(categoriesDTO == null)
-                return ResultService.Fail("not found promotion");
+                return ResultService.Fail("not found categories");
 
             return ResultService.Ok(categoriesDTO);
         }catch (Exception ex){
@@ -80,7 +80,7 @@ public class CategoriesService implements ICategoriesService {
             resultCreate = cloudinaryUti.CreateMedia(categoriesCreateDTOValidator.getImgCategory(), "category-all-java", 360, 360);
 
             if (resultCreate.getImgUrl() == null || resultCreate.getPublicId() == null)
-                return ResultService.Fail("error when create Img Promotion");
+                return ResultService.Fail("error when create Img category");
 
             var categories = new Categories(categoryId, resultCreate.getImgUrl(),
                     categoriesCreateDTOValidator.getAltValue(), categoriesCreateDTOValidator.getTitle());

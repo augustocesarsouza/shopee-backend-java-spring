@@ -207,8 +207,6 @@ public class ProductsOfferFlashServiceTest {
 
         var resultError = new BeanPropertyBindingResult(productsOfferFlashDTOValidator, "productsOfferFlashDTOValidator");
 
-        var ProductsOfferFlashDTOMap = new ProductsOfferFlashDTO();
-
         var result = productsOfferFlashService.CreateAsync(productsOfferFlashDTOValidator, resultError);
 
         // Assert
