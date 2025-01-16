@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface IProductHighlightRepository {
+    ProductHighlightDTO GetProductHighlightToDelete(UUID categoriesId);
     ProductHighlightDTO GetProductHighlightById(UUID productHighlightId);
     List<ProductHighlightDTO> GetAllProductHighlight();
     ProductHighlight create(ProductHighlight productHighlight);

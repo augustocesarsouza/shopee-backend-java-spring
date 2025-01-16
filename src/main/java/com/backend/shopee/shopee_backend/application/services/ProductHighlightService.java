@@ -1,5 +1,6 @@
 package com.backend.shopee.shopee_backend.application.services;
 
+import com.backend.shopee.shopee_backend.application.dto.CategoriesDTO;
 import com.backend.shopee.shopee_backend.application.dto.ProductHighlightDTO;
 import com.backend.shopee.shopee_backend.application.dto.validateErrosDTOs.IValidateErrorsDTO;
 import com.backend.shopee.shopee_backend.application.dto.validations.ProductHighlightValidatorDTOs.ProductHighlightDTOValidator;
@@ -38,7 +39,7 @@ public class ProductHighlightService implements IProductHighlightService {
             var productHighlightDTO = productHighlightRepository.GetProductHighlightById(productHighlightId);
 
             if(productHighlightDTO == null)
-                return ResultService.Fail("not found categories");
+                return ResultService.Fail("not found productHighlight");
 
             return ResultService.Ok(productHighlightDTO);
         }catch (Exception ex){
@@ -52,7 +53,7 @@ public class ProductHighlightService implements IProductHighlightService {
             var productHighlightDTOs = productHighlightRepository.GetAllProductHighlight();
 
             if(productHighlightDTOs == null)
-                return ResultService.Fail("not found categories");
+                return ResultService.Fail("not found productHighlight");
 
             return ResultService.Ok(productHighlightDTOs);
         }catch (Exception ex){
@@ -97,6 +98,24 @@ public class ProductHighlightService implements IProductHighlightService {
 
     @Override
     public ResultService<ProductHighlightDTO> Delete(UUID productHighlightId) {
-        return null;
+        try {
+            var productHighlightDelete = productHighlightRepository.GetProductHighlightToDelete(productHighlightId);
+
+            if(productHighlightDelete == null)
+                return ResultService.Fail("productHighlight not found");
+
+            if(productHighlightDelete.getImgProduct() != null){
+                var deleteFound = cloudinaryUti.DeleteFileCloudinaryExtractingPublicIdFromUrlList(productHighlightDelete.getImgProduct());
+
+                if(!deleteFound.getDeleteSuccessfully())
+                    return ResultService.Fail(deleteFound.getMessage());
+            }
+
+            var productHighlightDeleteSuccessfully = productHighlightRepository.delete(productHighlightDelete.getId());
+
+            return ResultService.Ok(modelMapper.map(productHighlightDeleteSuccessfully, ProductHighlightDTO.class));
+        }catch (Exception ex){
+            return ResultService.Fail(ex.getMessage());
+        }
     }
 }

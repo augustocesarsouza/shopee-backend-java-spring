@@ -1,5 +1,6 @@
 package com.backend.shopee.shopee_backend.data.repositories;
 
+import com.backend.shopee.shopee_backend.application.dto.CategoriesDTO;
 import com.backend.shopee.shopee_backend.application.dto.ProductHighlightDTO;
 import com.backend.shopee.shopee_backend.data.context.ProductHighlightRepositoryJPA;
 import com.backend.shopee.shopee_backend.domain.entities.ProductHighlight;
@@ -17,6 +18,11 @@ public class ProductHighlightRepository implements IProductHighlightRepository {
     @Autowired
     public ProductHighlightRepository(ProductHighlightRepositoryJPA productHighlightRepositoryJPA) {
         this.productHighlightRepositoryJPA = productHighlightRepositoryJPA;
+    }
+
+    @Override
+    public ProductHighlightDTO GetProductHighlightToDelete(UUID categoriesId) {
+        return productHighlightRepositoryJPA.GetCategoriesToDelete(categoriesId);
     }
 
     @Override
