@@ -9,6 +9,6 @@ import org.junit.platform.suite.api.Suite;
 @SelectClasses({UserManagementServiceTest.class, UserAuthenticationServiceTest.class, AddressServiceTest.class,
         CuponServiceTest.class, ProductsOfferFlashServiceTest.class, PromotionServiceTest.class, PromotionUserServiceTest.class,
         ShopeeUpdateServiceTest.class, ShopeeUpdateUserServiceTest.class, BCryptPasswordEncoderUtilTest.class,
-        CategoriesServiceTest.class})
+        CategoriesServiceTest.class, ProductDiscoveriesOfDayServiceTest.class})
 public class TestAllClass {
 }
