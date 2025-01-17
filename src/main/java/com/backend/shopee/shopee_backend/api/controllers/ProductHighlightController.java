@@ -20,7 +20,7 @@ import java.util.UUID;
 @RequestMapping("/v1")
 public class ProductHighlightController {
     private final IProductHighlightService productHighlightService;
- // FAZER TESTE DO BACKEND, E PUCHAR NO FRONTEND
+
     @Autowired
     public ProductHighlightController(IProductHighlightService productHighlightService) {
         this.productHighlightService = productHighlightService;

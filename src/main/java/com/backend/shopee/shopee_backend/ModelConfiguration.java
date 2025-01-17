@@ -173,6 +173,21 @@ public class ModelConfiguration {
                 }
             });
 
+            modelMapper.addMappings(new PropertyMap<ProductDiscoveriesOfDay, ProductDiscoveriesOfDayDTO>() {
+                @Override
+                protected void configure() {
+                    map().setId(source.getId());
+                    map().setTitle(source.getTitle());
+                    map().setImgProduct(source.getImgProduct());
+                    map().setImgPartBottom(source.getImgPartBottom());
+                    map().setDiscountPercentage(source.getDiscountPercentage());
+                    map().setAd(source.getAd());
+                    map().setPrice(source.getPrice());
+                    map().setQuantitySold(source.getQuantitySold());
+
+                }
+            });
+
             return modelMapper;
     }
 }
