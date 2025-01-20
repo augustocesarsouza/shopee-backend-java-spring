@@ -35,6 +35,20 @@ public class ProductsOfferFlashService implements IProductsOfferFlashService {
     }
 
     @Override
+    public ResultService<ProductsOfferFlashDTO> GetByProductsOfferFlashId(UUID productsOfferFlashId) {
+        try {
+            var productsOfferFlashDTO = productsOfferFlashRepository.GetProductsOfferFlashById(productsOfferFlashId.toString());
+
+            if(productsOfferFlashDTO == null)
+                return ResultService.Fail("not found promotion");
+
+            return ResultService.Ok(productsOfferFlashDTO);
+        }catch (Exception ex){
+            return ResultService.Fail(ex.getMessage());
+        }
+    }
+
+    @Override
     public ResultService<List<ProductsOfferFlashDTO>> GetAllProduct() {
         try {
             var productsOfferFlashDTOs = productsOfferFlashRepository.GetAllProduct();

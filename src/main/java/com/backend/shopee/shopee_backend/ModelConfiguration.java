@@ -184,7 +184,27 @@ public class ModelConfiguration {
                     map().setAd(source.getAd());
                     map().setPrice(source.getPrice());
                     map().setQuantitySold(source.getQuantitySold());
+                }
+            });
 
+            modelMapper.addMappings(new PropertyMap<FlashSaleProductAllInfo, FlashSaleProductAllInfoDTO>() {
+                @Override
+                protected void configure() {
+                    map().setId(source.getId());
+                    map().setProductsOfferFlashId(source.getProductsOfferFlashId());
+                    map().setProductReviewsRate(source.getProductReviewsRate());
+                    map().setQuantitySold(source.getQuantitySold());
+                    map().setFavoriteQuantity(source.getFavoriteQuantity());
+                    map().setQuantityEvaluation(source.getQuantityEvaluation());
+                    map().setCoins(source.getCoins());
+                    map().setCreditCard(source.getCreditCard());
+                    map().setVoltage(source.getVoltage());
+                    map().setQuantityPiece(source.getQuantityPiece());
+                    map().setSize(source.getSize());
+                    map().setProductHaveInsurance(source.getProductHaveInsurance());
+
+                    when(Objects::nonNull)
+                            .map(source.getProductsOfferFlash(), destination.getProductsOfferFlashDTO());
                 }
             });
 

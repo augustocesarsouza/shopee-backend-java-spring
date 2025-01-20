@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface IProductsOfferFlashService {
+    ResultService<ProductsOfferFlashDTO> GetByProductsOfferFlashId(UUID productsOfferFlashId);
     ResultService<List<ProductsOfferFlashDTO>> GetAllProduct();
     ResultService<List<ProductsOfferFlashDTO>> GetAllByTagProduct(String hourFlashOffer, String tagProduct, int pageNumber, int pageSize);
     ResultService<ProductsOfferFlashDTO> CreateAsync(ProductsOfferFlashDTOValidator productsOfferFlashDTOValidator, BindingResult result);

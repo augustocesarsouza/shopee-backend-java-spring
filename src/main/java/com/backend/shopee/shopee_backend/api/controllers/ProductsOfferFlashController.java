@@ -39,7 +39,7 @@ public class ProductsOfferFlashController {
         return ResponseEntity.badRequest().body(result);
     }
 
-    @GetMapping("/public/product-offer-flash/get-all-by-tag-product/{hourFlashOffer}/{tagProduct}/{pageNumber}/{pageSize}")
+    @GetMapping("/product-offer-flash/get-all-by-tag-product/{hourFlashOffer}/{tagProduct}/{pageNumber}/{pageSize}")
     public ResponseEntity<ResultService<List<ProductsOfferFlashDTO>>> GetAllByTagProduct(@PathVariable String hourFlashOffer, @PathVariable String tagProduct,
                                                                 @PathVariable String pageNumber, @PathVariable String pageSize){
         var result = productsOfferFlashService.GetAllByTagProduct(hourFlashOffer, tagProduct, Integer.parseInt(pageNumber), Integer.parseInt(pageSize));
