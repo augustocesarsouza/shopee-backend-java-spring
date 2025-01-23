@@ -74,7 +74,7 @@ public class UserSellerProductService implements IUserSellerProductService {
                     "img-user-sold-product-only-img-java", 360, 360);
 
             if (resultCreate.getImgUrl() == null || resultCreate.getPublicId() == null)
-                return ResultService.Fail("error when create Img Promotion");
+                return ResultService.Fail("error when create Img UserSellerProduct");
 
             UUID entityId = UUID.randomUUID();
 
