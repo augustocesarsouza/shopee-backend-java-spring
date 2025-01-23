@@ -21,7 +21,7 @@ public class FlashSaleProductAllInfoDTO {
     @JsonProperty("favoriteQuantity")
     private Double FavoriteQuantity;
     @JsonProperty("quantityEvaluation")
-    private Double QuantityEvaluation;
+    private Integer QuantityEvaluation;
     @JsonProperty("coins")
     private Integer Coins;
     @JsonProperty("creditCard")
@@ -37,7 +37,7 @@ public class FlashSaleProductAllInfoDTO {
 
     public FlashSaleProductAllInfoDTO(UUID id, UUID productsOfferFlashId, ProductsOfferFlashDTO productsOfferFlashDTO,
                                       Double productReviewsRate, Integer quantitySold, Double favoriteQuantity,
-                                      Double quantityEvaluation, Integer coins, String creditCard, String voltage,
+                                      Integer quantityEvaluation, Integer coins, String creditCard, String voltage,
                                       Integer quantityPiece, String size, Boolean productHaveInsurance) {
         Id = id;
         ProductsOfferFlashId = productsOfferFlashId;
@@ -81,7 +81,7 @@ public class FlashSaleProductAllInfoDTO {
         return FavoriteQuantity;
     }
 
-    public Double getQuantityEvaluation() {
+    public Integer getQuantityEvaluation() {
         return QuantityEvaluation;
     }
 
@@ -133,7 +133,7 @@ public class FlashSaleProductAllInfoDTO {
         FavoriteQuantity = favoriteQuantity;
     }
 
-    public void setQuantityEvaluation(Double quantityEvaluation) {
+    public void setQuantityEvaluation(Integer quantityEvaluation) {
         QuantityEvaluation = quantityEvaluation;
     }
 

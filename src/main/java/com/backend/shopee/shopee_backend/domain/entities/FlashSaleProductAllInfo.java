@@ -29,7 +29,7 @@ public class FlashSaleProductAllInfo {
     private Double FavoriteQuantity;
     @Column(name = "quantity_evaluation")
     @JsonProperty("quantityEvaluation")
-    private Double QuantityEvaluation;
+    private Integer QuantityEvaluation;
     @Column(name = "coins")
     @JsonProperty("coins")
     private Integer Coins;
@@ -51,7 +51,7 @@ public class FlashSaleProductAllInfo {
 
     public FlashSaleProductAllInfo(UUID id, UUID productsOfferFlashId, ProductsOfferFlash productsOfferFlash,
                                    Double productReviewsRate, Integer quantitySold, Double favoriteQuantity,
-                                   Double quantityEvaluation, Integer coins, String creditCard, String voltage,
+                                   Integer quantityEvaluation, Integer coins, String creditCard, String voltage,
                                    Integer quantityPiece, String size, Boolean productHaveInsurance) {
         Id = id;
         ProductsOfferFlashId = productsOfferFlashId;
@@ -95,7 +95,7 @@ public class FlashSaleProductAllInfo {
         return FavoriteQuantity;
     }
 
-    public Double getQuantityEvaluation() {
+    public Integer getQuantityEvaluation() {
         return QuantityEvaluation;
     }
 
@@ -147,7 +147,7 @@ public class FlashSaleProductAllInfo {
         FavoriteQuantity = favoriteQuantity;
     }
 
-    public void setQuantityEvaluation(Double quantityEvaluation) {
+    public void setQuantityEvaluation(Integer quantityEvaluation) {
         QuantityEvaluation = quantityEvaluation;
     }
 

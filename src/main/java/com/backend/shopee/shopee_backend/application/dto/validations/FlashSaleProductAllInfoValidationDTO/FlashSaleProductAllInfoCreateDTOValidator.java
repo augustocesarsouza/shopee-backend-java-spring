@@ -24,7 +24,7 @@ public class FlashSaleProductAllInfoCreateDTOValidator {
     private Double FavoriteQuantity;
     @Min(value = 1, message = "quantityEvaluation must be greater than or equal to 1")
     @JsonProperty("quantityEvaluation")
-    private Double QuantityEvaluation;
+    private Integer QuantityEvaluation;
     @JsonProperty("coins")
     private Integer Coins;
     @JsonProperty("creditCard")
@@ -39,7 +39,7 @@ public class FlashSaleProductAllInfoCreateDTOValidator {
     private Boolean ProductHaveInsurance;
 
     public FlashSaleProductAllInfoCreateDTOValidator(String productsOfferFlashId, Double productReviewsRate,
-                                                     Integer quantitySold, Double favoriteQuantity, Double quantityEvaluation,
+                                                     Integer quantitySold, Double favoriteQuantity, Integer quantityEvaluation,
                                                      Integer coins, String creditCard, String voltage, Integer quantityPiece,
                                                      String size, Boolean productHaveInsurance) {
         ProductsOfferFlashId = productsOfferFlashId;
@@ -74,7 +74,7 @@ public class FlashSaleProductAllInfoCreateDTOValidator {
         return FavoriteQuantity;
     }
 
-    public Double getQuantityEvaluation() {
+    public Integer getQuantityEvaluation() {
         return QuantityEvaluation;
     }
 
@@ -118,7 +118,7 @@ public class FlashSaleProductAllInfoCreateDTOValidator {
         FavoriteQuantity = favoriteQuantity;
     }
 
-    public void setQuantityEvaluation(Double quantityEvaluation) {
+    public void setQuantityEvaluation(Integer quantityEvaluation) {
         QuantityEvaluation = quantityEvaluation;
     }
 

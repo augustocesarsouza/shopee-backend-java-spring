@@ -215,6 +215,7 @@ public class ModelConfiguration {
                 map().setListImageUrlBottom(source.getListImageUrlBottom());
             }
         });
+
         modelMapper.addMappings(new PropertyMap<ProductOfferFlashType, ProductOfferFlashTypeDTO>() {
             @Override
             protected void configure() {
@@ -223,6 +224,23 @@ public class ModelConfiguration {
                 map().setOptionType(source.getOptionType());
                 map().setProductsOfferFlashId(source.getProductsOfferFlashId());
                 map().setTitleImg(source.getTitleImg());
+            }
+        });
+
+        modelMapper.addMappings(new PropertyMap<UserSellerProduct, UserSellerProductDTO>() {
+            @Override
+            protected void configure() {
+                map().setId(source.getId());
+                map().setName(source.getName());
+                map().setImgProfile(source.getImgProfile());
+                map().setImgFloating(source.getImgFloating());
+                map().setLastLogin(source.getLastLogin());
+                map().setReviews(source.getReviews());
+                map().setChatResponseRate(source.getChatResponseRate());
+                map().setAccountCreationDate(source.getAccountCreationDate());
+                map().setQuantityOfProductSold(source.getQuantityOfProductSold());
+                map().setUsuallyRespondsToChatIn(source.getUsuallyRespondsToChatIn());
+                map().setFollowers(source.getFollowers());
             }
         });
 
