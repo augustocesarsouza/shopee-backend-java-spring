@@ -95,7 +95,7 @@ public class FlashSaleProductAllInfoServiceTest {
     @Test
     public void should_create_Successfully_ProductsOfferFlash(){
         var flashSaleProductAllInfoCreateDTOValidator = new FlashSaleProductAllInfoCreateDTOValidator("2562f0a0-c47b-4ed4-8542-abc4f78ca4be",
-                4.7, 36400, 33.100, 18.400,
+                4.7, 36400, 33.100, 18400,
                 500, "12x R$8,25", null, 536, null, false);
 
         var resultError = new BeanPropertyBindingResult(flashSaleProductAllInfoCreateDTOValidator, "FlashSaleProductAllInfoCreateDTOValidator");
@@ -131,7 +131,7 @@ public class FlashSaleProductAllInfoServiceTest {
     @Test
     public void error_validate_DTO_When_Create(){
         var flashSaleProductAllInfoCreateDTOValidator = new FlashSaleProductAllInfoCreateDTOValidator("",
-                4.7, 36400, 33.100, 18.400,
+                4.7, 36400, 33.100, 18400,
                 500, "12x R$8,25", null, 536, null, false);
 
         var resultError = new BeanPropertyBindingResult(flashSaleProductAllInfoCreateDTOValidator, "FlashSaleProductAllInfoCreateDTOValidator");
@@ -156,7 +156,7 @@ public class FlashSaleProductAllInfoServiceTest {
     @Test
     public void should_Throw_Error_When_Verify_Whether_ProductsOfferFlash_Exist_create_ProductsOfferFlash(){
         var flashSaleProductAllInfoCreateDTOValidator = new FlashSaleProductAllInfoCreateDTOValidator("2562f0a0-c47b-4ed4-8542-abc4f78ca4be",
-                4.7, 36400, 33.100, 18.400,
+                4.7, 36400, 33.100, 18400,
                 500, "12x R$8,25", null, 536, null, false);
 
         var resultError = new BeanPropertyBindingResult(flashSaleProductAllInfoCreateDTOValidator, "FlashSaleProductAllInfoCreateDTOValidator");
@@ -177,7 +177,7 @@ public class FlashSaleProductAllInfoServiceTest {
     @Test
     public void should_ThrowException_When_create_ProductsOfferFlash(){
         var flashSaleProductAllInfoCreateDTOValidator = new FlashSaleProductAllInfoCreateDTOValidator("2562f0a0-c47b-4ed4-8542-abc4f78ca4be",
-                4.7, 36400, 33.100, 18.400,
+                4.7, 36400, 33.100, 18400,
                 500, "12x R$8,25", null, 536, null, false);
 
         var resultError = new BeanPropertyBindingResult(flashSaleProductAllInfoCreateDTOValidator, "FlashSaleProductAllInfoCreateDTOValidator");

@@ -37,8 +37,7 @@ public class ProductOfferFlashSellerService implements IProductOfferFlashSellerS
                 return ResultService.Fail("not found entity");
             }
 
-            var addressMap = modelMapper.map(productOfferFlashSellerDTO, ProductOfferFlashSellerDTO.class);
-            return ResultService.Ok(addressMap);
+            return ResultService.Ok(productOfferFlashSellerDTO);
         }catch (Exception ex){
             return ResultService.Fail(ex.getMessage());
         }
