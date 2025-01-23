@@ -244,6 +244,18 @@ public class ModelConfiguration {
             }
         });
 
+        modelMapper.addMappings(new PropertyMap<ProductOfferFlashSeller, ProductOfferFlashSellerDTO>() {
+            @Override
+            protected void configure() {
+                map().setId(source.getId());
+                map().setUserSellerProductId(source.getUserSellerProductId());
+                map().setProductsOfferFlashId(source.getProductsOfferFlashId());
+
+                when(Objects::nonNull)
+                        .map(source.getUserSellerProduct(), destination.getUserSellerProductDTO());
+            }
+        });
+
         return modelMapper;
     }
 }
