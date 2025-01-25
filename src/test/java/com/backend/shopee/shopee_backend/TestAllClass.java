@@ -10,6 +10,7 @@ import org.junit.platform.suite.api.Suite;
         FlashSaleProductAllInfoServiceTest.class, ProductDiscoveriesOfDayServiceTest.class, ProductHighlightServiceTest.class,
         ProductOfferFlashTypeServiceTest.class, ProductsOfferFlashServiceTest.class, PromotionServiceTest.class, PromotionUserServiceTest.class,
         ShopeeUpdateServiceTest.class, ShopeeUpdateUserServiceTest.class, UserManagementServiceTest.class, UserAuthenticationServiceTest.class,
-        BCryptPasswordEncoderUtilTest.class, UserSellerProductServiceTest.class, ProductOfferFlashSellerServiceTest.class})
+        BCryptPasswordEncoderUtilTest.class, UserSellerProductServiceTest.class, ProductOfferFlashSellerServiceTest.class,
+        ProductOfferFlashDetailsServiceTest.class})
 public class TestAllClass {
 }
