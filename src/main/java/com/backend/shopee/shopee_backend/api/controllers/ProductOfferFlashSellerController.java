@@ -25,10 +25,10 @@ public class ProductOfferFlashSellerController {
         this.productOfferFlashSellerService = productOfferFlashSellerService;
     }
 
-    @GetMapping("/public/product-offer-flash-seller/get-by-user-id-all/{productsOfferFlashId}")
+    @GetMapping("/product-offer-flash-seller/get-by-products-offer-flash-id/{productsOfferFlashId}")
     public ResponseEntity<ResultService<ProductOfferFlashSellerDTO>> GetByProductsOfferFlashId(@PathVariable String productsOfferFlashId){
         var result = productOfferFlashSellerService.GetByProductsOfferFlashId(UUID.fromString(productsOfferFlashId));
-
+//        user-seller-product-offer-flash
         if(result.IsSuccess){
             return ResponseEntity.ok(result);
         }

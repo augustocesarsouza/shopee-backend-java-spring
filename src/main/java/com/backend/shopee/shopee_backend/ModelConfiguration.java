@@ -256,6 +256,15 @@ public class ModelConfiguration {
             }
         });
 
+        modelMapper.addMappings(new PropertyMap<ProductOfferFlashDetails, ProductOfferFlashDetailsDTO>() {
+            @Override
+            protected void configure() {
+                map().setId(source.getId());
+                map().setDetails(source.getDetails());
+                map().setProductsOfferFlashId(source.getProductsOfferFlashId());
+            }
+        });
+
         return modelMapper;
     }
 }
