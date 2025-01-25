@@ -1,6 +1,5 @@
 package com.backend.shopee.shopee_backend.application.services;
 
-import com.backend.shopee.shopee_backend.application.dto.CuponDTO;
 import com.backend.shopee.shopee_backend.application.dto.ProductOfferFlashDetailsDTO;
 import com.backend.shopee.shopee_backend.application.dto.validateErrosDTOs.IValidateErrorsDTO;
 import com.backend.shopee.shopee_backend.application.dto.validations.ProductOfferFlashDetailsValidationDTOs.ProductOfferFlashDetailsCreateDTOValidator;
