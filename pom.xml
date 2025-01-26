@@ -125,6 +125,18 @@
 			<version>3.2.0</version>
 		</dependency>
 
+<!--		<dependency>-->
+<!--			<groupId>org.apache.commons</groupId>-->
+<!--			<artifactId>commons-imaging</artifactId>-->
+<!--			<version>1.0-alpha3</version>-->
+<!--		</dependency>-->
+
+		<dependency>
+			<groupId>com.twelvemonkeys.imageio</groupId>
+			<artifactId>imageio-webp</artifactId>
+			<version>3.9.4</version>
+		</dependency>
+
 		<!-- Brevo mailinglist integration -->
 		<dependency>
 			<groupId>com.sendinblue</groupId>

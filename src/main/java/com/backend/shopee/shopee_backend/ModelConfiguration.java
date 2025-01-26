@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -273,6 +274,28 @@ public class ModelConfiguration {
                 map().setDescriptions(source.getDescriptions());
             }
         });
+
+        modelMapper.addMappings(new PropertyMap<ProductFlashSaleReview, ProductFlashSaleReviewDTO>() {
+            @Override
+            protected void configure() {
+                map().setId(source.getId());
+                map().setMessage(source.getMessage());
+                map().setCreationDate(source.getCreationDate());
+                map().setCostBenefit(source.getCostBenefit());
+                map().setSimilarToAd(source.getSimilarToAd());
+                map().setStarQuantity(source.getStarQuantity());
+                map().setProductsOfferFlashId(source.getProductsOfferFlashId());
+                map().setUserId(source.getUserId());
+                map().setImgAndVideoReviewsProduct(source.getImgAndVideoReviewsProduct());
+                map().setVariation(source.getVariation());
+
+                when(Objects::nonNull)
+                        .map(source.getUser(), destination.getUserDTO());
+            }
+        });
+//        ProductFlashSaleReviewDTO(UUID id, String message, ZonedDateTime creationDate, String costBenefit,
+//                String similarToAd, Integer starQuantity, UUID productsOfferFlashId, UUID userId,
+//                UserDTO userDTO, List<String> imgAndVideoReviewsProduct, String variation)
 
         return modelMapper;
     }
