@@ -1,7 +1,6 @@
 package com.backend.shopee.shopee_backend.application.services;
 
 import com.backend.shopee.shopee_backend.application.dto.ProductFlashSaleReviewDTO;
-import com.backend.shopee.shopee_backend.application.dto.PromotionDTO;
 import com.backend.shopee.shopee_backend.application.dto.validateErrosDTOs.IValidateErrorsDTO;
 import com.backend.shopee.shopee_backend.application.dto.validations.ProductFlashSaleReviewValidationDTOs.ProductFlashSaleReviewCreateDTOValidator;
 import com.backend.shopee.shopee_backend.application.services.interfaces.IProductFlashSaleReviewService;
@@ -17,7 +16,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -25,8 +23,6 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
-
-//import org.apache.commons.imaging.Imaging;
 
 @Service
 public class ProductFlashSaleReviewService implements IProductFlashSaleReviewService {
@@ -82,7 +78,7 @@ public class ProductFlashSaleReviewService implements IProductFlashSaleReviewSer
             List<String> listElementImgVideo = productFlashSaleReviewCreateDTOValidator.getImgAndVideoReviewsProduct();
             List<String> listImgVideo = new ArrayList<>();
 
-            if(!listElementImgVideo.isEmpty()){
+            if(listElementImgVideo != null && !listElementImgVideo.isEmpty()){
                 for (String el : listElementImgVideo) {
                     boolean isImage = el.startsWith("data:image");
                     boolean isVideo = el.startsWith("data:video");
@@ -164,16 +160,9 @@ public class ProductFlashSaleReviewService implements IProductFlashSaleReviewSer
             if(entityDelete == null)
                 return ResultService.Fail("ProductFlashSaleReviewDTO not found");
 
-//            if(entityDelete.getImg() != null){
-//                var deleteFound = cloudinaryUti.DeleteFileCloudinaryExtractingPublicIdFromUrlList(promotionDelete.getImg());
-//
-//                if(!deleteFound.getDeleteSuccessfully())
-//                    return ResultService.Fail(deleteFound.getMessage());
-//            }
-
             var listImg = entityDelete.getImgAndVideoReviewsProduct();
 
-            if(!listImg.isEmpty()){
+            if(listImg != null && !listImg.isEmpty()){
                 for (String el : listImg) {
                     var deleteFound = cloudinaryUti.DeleteFileCloudinaryExtractingPublicIdFromUrlList(el);
 

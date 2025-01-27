@@ -1,15 +1,12 @@
-package com.backend.shopee.shopee_backend.applicationTest.userServiceTest;
+package com.backend.shopee.shopee_backend.applicationTest.AllServiceTest;
 
-import com.backend.shopee.shopee_backend.application.dto.ProductHighlightDTO;
 import com.backend.shopee.shopee_backend.application.dto.ProductOptionImageBottomDTO;
 import com.backend.shopee.shopee_backend.application.dto.validateErrosDTOs.IValidateErrorsDTO;
-import com.backend.shopee.shopee_backend.application.dto.validations.ProductHighlightValidatorDTOs.ProductHighlightDTOValidator;
 import com.backend.shopee.shopee_backend.application.dto.validations.ProductOptionImageBottomValidationDTOs.ProductOptionImageBottomCreateDTOValidator;
 import com.backend.shopee.shopee_backend.application.services.ErrorValidation;
 import com.backend.shopee.shopee_backend.application.services.ProductOptionImageBottomService;
 import com.backend.shopee.shopee_backend.data.cloudinaryUtil.CloudinaryCreate;
 import com.backend.shopee.shopee_backend.data.utilityExternal.Interface.ICloudinaryUti;
-import com.backend.shopee.shopee_backend.domain.entities.ProductHighlight;
 import com.backend.shopee.shopee_backend.domain.entities.ProductOptionImageBottom;
 import com.backend.shopee.shopee_backend.domain.repositories.IProductOptionImageBottomRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +17,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.validation.BeanPropertyBindingResult;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
