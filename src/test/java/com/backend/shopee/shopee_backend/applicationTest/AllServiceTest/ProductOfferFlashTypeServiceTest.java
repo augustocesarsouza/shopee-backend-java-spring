@@ -1,15 +1,12 @@
-package com.backend.shopee.shopee_backend.applicationTest.userServiceTest;
+package com.backend.shopee.shopee_backend.applicationTest.AllServiceTest;
 
-import com.backend.shopee.shopee_backend.application.dto.ProductHighlightDTO;
 import com.backend.shopee.shopee_backend.application.dto.ProductOfferFlashTypeDTO;
 import com.backend.shopee.shopee_backend.application.dto.validateErrosDTOs.IValidateErrorsDTO;
-import com.backend.shopee.shopee_backend.application.dto.validations.ProductHighlightValidatorDTOs.ProductHighlightDTOValidator;
 import com.backend.shopee.shopee_backend.application.dto.validations.ProductOfferFlashTypeValidationDTOs.ProductOfferFlashTypeCreateDTOValidator;
 import com.backend.shopee.shopee_backend.application.services.ErrorValidation;
 import com.backend.shopee.shopee_backend.application.services.ProductOfferFlashTypeService;
 import com.backend.shopee.shopee_backend.data.cloudinaryUtil.CloudinaryCreate;
 import com.backend.shopee.shopee_backend.data.utilityExternal.Interface.ICloudinaryUti;
-import com.backend.shopee.shopee_backend.domain.entities.ProductHighlight;
 import com.backend.shopee.shopee_backend.domain.entities.ProductOfferFlashType;
 import com.backend.shopee.shopee_backend.domain.repositories.IProductOfferFlashTypeRepository;
 import org.junit.jupiter.api.BeforeEach;

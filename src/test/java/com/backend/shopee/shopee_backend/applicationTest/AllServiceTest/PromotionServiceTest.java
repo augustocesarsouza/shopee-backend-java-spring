@@ -1,4 +1,4 @@
-package com.backend.shopee.shopee_backend.applicationTest.userServiceTest;
+package com.backend.shopee.shopee_backend.applicationTest.AllServiceTest;
 import com.backend.shopee.shopee_backend.application.dto.PromotionDTO;
 import com.backend.shopee.shopee_backend.application.dto.validateErrosDTOs.IValidateErrorsDTO;
 import com.backend.shopee.shopee_backend.application.dto.validations.PromotionValidationDTOs.PromotionCreateDTOValidator;

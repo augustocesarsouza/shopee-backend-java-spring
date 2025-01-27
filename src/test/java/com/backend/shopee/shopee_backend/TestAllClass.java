@@ -1,6 +1,6 @@
 package com.backend.shopee.shopee_backend;
 
-import com.backend.shopee.shopee_backend.applicationTest.userServiceTest.*;
+import com.backend.shopee.shopee_backend.applicationTest.AllServiceTest.*;
 import com.backend.shopee.shopee_backend.applicationTest.utilTest.BCryptPasswordEncoderUtilTest;
 import org.junit.platform.suite.api.SelectClasses;
 import org.junit.platform.suite.api.Suite;
@@ -11,6 +11,6 @@ import org.junit.platform.suite.api.Suite;
         ProductOfferFlashTypeServiceTest.class, ProductsOfferFlashServiceTest.class, PromotionServiceTest.class, PromotionUserServiceTest.class,
         ShopeeUpdateServiceTest.class, ShopeeUpdateUserServiceTest.class, UserManagementServiceTest.class, UserAuthenticationServiceTest.class,
         BCryptPasswordEncoderUtilTest.class, UserSellerProductServiceTest.class, ProductOfferFlashSellerServiceTest.class,
-        ProductOfferFlashDetailsServiceTest.class})
+        ProductOfferFlashDetailsServiceTest.class, ProductFlashSaleReviewServiceTest.class})
 public class TestAllClass {
 }
