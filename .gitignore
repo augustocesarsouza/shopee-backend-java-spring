@@ -36,7 +36,4 @@ build/
 postgresData
 /postgresData
 
-/src/main/resources/
-/src/main/resources
-/src/test/java/resources/
-/src/test/java/resources
+src/main/resources/application-local.properties

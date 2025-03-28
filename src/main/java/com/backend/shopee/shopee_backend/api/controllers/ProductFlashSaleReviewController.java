@@ -1,9 +1,7 @@
 package com.backend.shopee.shopee_backend.api.controllers;
 
 import com.backend.shopee.shopee_backend.application.dto.ProductFlashSaleReviewDTO;
-import com.backend.shopee.shopee_backend.application.dto.UserSellerProductDTO;
 import com.backend.shopee.shopee_backend.application.dto.validations.ProductFlashSaleReviewValidationDTOs.ProductFlashSaleReviewCreateDTOValidator;
-import com.backend.shopee.shopee_backend.application.dto.validations.UserSellerProductValidationDTOs.UserSellerProductCreateDTOValidator;
 import com.backend.shopee.shopee_backend.application.services.ProductFlashSaleReviewService;
 import com.backend.shopee.shopee_backend.application.services.ResultService;
 import jakarta.validation.Valid;

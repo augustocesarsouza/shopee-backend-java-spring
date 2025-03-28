@@ -2,10 +2,6 @@ package com.backend.shopee.shopee_backend;
 
 import com.backend.shopee.shopee_backend.data.authentication.FilterToken;
 import com.cloudinary.Cloudinary;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -36,6 +32,8 @@ public class Configurations {
     private String API_KEY;
     @Value("${API-SECRET}")
     private String API_SECRET;
+    @Value("${FRONTEND_URL}")
+    private String frontendUrl;
 
     @Autowired
     public Configurations(FilterToken filter) {
@@ -45,10 +43,19 @@ public class Configurations {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(request -> {
+                    var corsConfig = new org.springframework.web.cors.CorsConfiguration();
+                    corsConfig.addAllowedOrigin(frontendUrl);  // Permitir apenas o frontend
+                    corsConfig.addAllowedMethod(HttpMethod.GET);
+                    corsConfig.addAllowedMethod(HttpMethod.POST);
+                    corsConfig.addAllowedMethod(HttpMethod.PUT);
+                    corsConfig.addAllowedMethod(HttpMethod.DELETE);
+                    corsConfig.addAllowedHeader("*");
+                    corsConfig.setAllowCredentials(true);  // Permitir credenciais (cookies, tokens)
+                    return corsConfig;
+                }))
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                         authorizationManagerRequestMatcherRegistry
-//                                .requestMatchers(HttpMethod.GET, "/v1/user/login/{cpfOrEmail}/{password}").permitAll()
-//                                .requestMatchers(HttpMethod.POST, "/v1/user/create").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/v1/public/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/v1/public/**").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/v1/public/**").permitAll()

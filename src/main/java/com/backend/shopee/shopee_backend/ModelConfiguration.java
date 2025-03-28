@@ -1,20 +1,13 @@
 package com.backend.shopee.shopee_backend;
 
 import com.backend.shopee.shopee_backend.application.dto.*;
-import com.backend.shopee.shopee_backend.application.dto.validations.AddressValidationDTOs.AddressUpdateDTOValidator;
 import com.backend.shopee.shopee_backend.domain.entities.*;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 @Configuration
 public class ModelConfiguration {
@@ -293,9 +286,6 @@ public class ModelConfiguration {
                         .map(source.getUser(), destination.getUserDTO());
             }
         });
-//        ProductFlashSaleReviewDTO(UUID id, String message, ZonedDateTime creationDate, String costBenefit,
-//                String similarToAd, Integer starQuantity, UUID productsOfferFlashId, UUID userId,
-//                UserDTO userDTO, List<String> imgAndVideoReviewsProduct, String variation)
 
         return modelMapper;
     }

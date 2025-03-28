@@ -297,9 +297,6 @@ public class UserManagementServiceTest {
                 "Augusto92349923",null);
         String expectedErrorMessage = "Database connection error";
 
-        User user = new User();
-        UserDTO userDTO = new UserDTO();
-
         when(bCryptPasswordEncoderUtil.encodePassword(any())).thenReturn("password");
         when(userRepository.create(any())).thenThrow(new RuntimeException(expectedErrorMessage));
 

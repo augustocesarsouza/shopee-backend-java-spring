@@ -10,5 +10,4 @@ import java.util.List;
 public interface ITokenGenerator{
     InfoErrors<TokenOutValue> generatorTokenUser(User user);
     Claim getClaimUserId(String token) throws TokenExpiredException;
-
 }
