@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "tb_user_cupons", schema = "public")
+@Table(name = "tb_java_shopee_user_cupons", schema = "public")
 public class UserCupon {
     @jakarta.persistence.Id
     @Column(name = "user_cupons_id")

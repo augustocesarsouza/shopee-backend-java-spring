@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "tb_users", schema = "public")
+@Table(name = "tb_java_shopee_users", schema = "public")
 public class User implements UserDetails {
     @jakarta.persistence.Id
     @Column(name = "user_id")

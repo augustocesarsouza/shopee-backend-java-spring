@@ -1,6 +1,6 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-CREATE TABLE tb_address
+CREATE TABLE tb_java_shopee_address
 (
     address_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     full_name  VARCHAR(100) NOT NULL,

@@ -1,3 +1,3 @@
-ALTER TABLE tb_flash_sale_product_all_infos
+ALTER TABLE tb_java_shopee_flash_sale_product_all_infos
 ALTER COLUMN quantity_evaluation TYPE INTEGER
 USING quantity_evaluation::INTEGER;

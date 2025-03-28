@@ -1,6 +1,6 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-CREATE TABLE tb_promotion_users
+CREATE TABLE tb_java_shopee_promotion_users
 (
     promotion_users_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     promotion_id UUID NOT NULL,

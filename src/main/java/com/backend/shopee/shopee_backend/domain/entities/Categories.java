@@ -8,7 +8,7 @@ import jakarta.persistence.Table;
 import java.util.UUID;
 
 @Entity
-@Table(name = "tb_categories", schema = "public")
+@Table(name = "tb_java_shopee_categories", schema = "public")
 public class Categories {
     @jakarta.persistence.Id
     @Column(name = "categories_id")
