@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "tb_java_shopee_promotions", schema = "public")
+@Table(name = "tb_promotions", schema = "public")
 public class Promotion {
     @jakarta.persistence.Id
     @Column(name = "promotions_id")

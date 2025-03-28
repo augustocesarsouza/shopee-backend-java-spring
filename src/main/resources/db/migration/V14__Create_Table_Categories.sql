@@ -1,6 +1,6 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-CREATE TABLE tb_java_shopee_categories
+CREATE TABLE tb_categories
 (
     categories_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     img_category VARCHAR(130) NOT NULL,

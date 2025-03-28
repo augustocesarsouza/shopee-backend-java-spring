@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "tb_java_shopee_product_option_image_bottoms", schema = "public")
+@Table(name = "tb_product_option_image_bottoms", schema = "public")
 public class ProductOptionImageBottom {
     @jakarta.persistence.Id
     @Column(name = "product_option_image_bottoms_id")

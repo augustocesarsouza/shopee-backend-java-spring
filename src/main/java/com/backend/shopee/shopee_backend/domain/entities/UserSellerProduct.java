@@ -11,7 +11,7 @@ import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "tb_java_shopee_user_seller_products", schema = "public")
+@Table(name = "tb_user_seller_products", schema = "public")
 public class UserSellerProduct {
     @jakarta.persistence.Id
     @Column(name = "user_seller_products_id")

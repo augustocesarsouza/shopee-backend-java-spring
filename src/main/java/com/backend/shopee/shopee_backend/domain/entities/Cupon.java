@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "tb_java_shopee_cupons", schema = "public")
+@Table(name = "tb_cupons", schema = "public")
 public class Cupon {
     @jakarta.persistence.Id
     @Column(name = "cupons_id")

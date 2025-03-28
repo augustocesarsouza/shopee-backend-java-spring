@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "tb_java_shopee_address", schema = "public")
+@Table(name = "tb_address", schema = "public")
 public class Address {
     @jakarta.persistence.Id
     @Column(name = "address_id")
