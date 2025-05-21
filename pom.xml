@@ -169,6 +169,18 @@
 				<groupId>org.flywaydb</groupId>
 				<artifactId>flyway-maven-plugin</artifactId>
 				<version>9.22.3</version>
+				<configuration>
+					<url>jdbc:postgresql://localhost:5437/shopee</url>
+					<user>postgres</user>
+					<password>Postgre12345!</password>
+					<schemas>
+						<schema>public</schema>
+					</schemas>
+					<locations>
+						<location>filesystem:src/main/resources/db/migration</location>
+					</locations>
+					<baselineOnMigrate>true</baselineOnMigrate>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
