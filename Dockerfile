@@ -1,15 +1,22 @@
-# Etapa 1: build com Maven
-FROM maven:3.8.5-openjdk-17 AS build
+# Importing JDK and copying required files
+FROM openjdk:19-jdk AS build
 WORKDIR /app
-COPY . .
-RUN mvn clean package -DskipTests
+COPY pom.xml .
+COPY src src
 
-# Etapa 2: imagem leve para rodar o app
-FROM openjdk:17-jdk-slim
-WORKDIR /app
+# Copy Maven wrapper
+COPY mvnw .
+COPY .mvn .mvn
 
-# Copia o JAR gerado da etapa anterior
+# Set execution permission for the Maven wrapper
+RUN chmod +x ./mvnw
+RUN ./mvnw clean package -DskipTests
+
+# Stage 2: Create the final Docker image using OpenJDK 19
+FROM openjdk:19-jdk
+VOLUME /tmp
+
+# Copy the JAR from the build stage
 COPY --from=build /app/target/*.jar app.jar
-
-# Define o comando para rodar a aplicação
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java","-jar","/app.jar"]
+EXPOSE 8080
