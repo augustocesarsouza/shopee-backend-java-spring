@@ -1,22 +1,16 @@
-# Importing JDK and copying required files
-FROM openjdk:19-jdk AS build
-WORKDIR /app
-COPY pom.xml .
-COPY src src
+FROM ubuntu:latest AS build
 
-# Copy Maven wrapper
-COPY mvnw .
-COPY .mvn .mvn
+RUN apt-get update
+RUN apt-get install openjdk-17-jdk -y
+COPY . .
 
-# Set execution permission for the Maven wrapper
-RUN chmod +x ./mvnw
-RUN ./mvnw clean package -DskipTests
+RUN apt-get install maven -y
+RUN mvn clean install 
 
-# Stage 2: Create the final Docker image using OpenJDK 19
-FROM openjdk:19-jdk
-VOLUME /tmp
+FROM openjdk:17-jdk-slim
 
-# Copy the JAR from the build stage
-COPY --from=build /app/target/*.jar app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
 EXPOSE 8080
+
+COPY --from=build /target/deploy_render-1.0.0.jar app.jar
+
+ENTRYPOINT [ "java", "-jar", "app.jar" ]
