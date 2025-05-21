@@ -35,7 +35,8 @@ public class UserManagementService implements IUserManagementService {
     private final ModelMapper modelMapper;
 
     @Autowired
-    public UserManagementService(IUserRepository userRepository, IValidateErrorsDTO validateErrorsDTO, IBCryptPasswordEncoderUtil bCryptPasswordEncoder,
+    public UserManagementService(IUserRepository userRepository, IValidateErrorsDTO validateErrorsDTO,
+                                 IBCryptPasswordEncoderUtil bCryptPasswordEncoder,
                                  ICloudinaryUti cloudinaryUti, ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.validateErrorsDTO = validateErrorsDTO;

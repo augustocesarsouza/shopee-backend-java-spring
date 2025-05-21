@@ -70,6 +70,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>jakarta.persistence</groupId>
+			<artifactId>jakarta.persistence-api</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>42.7.4</version>
@@ -163,11 +169,6 @@
 				<groupId>org.flywaydb</groupId>
 				<artifactId>flyway-maven-plugin</artifactId>
 				<version>9.22.3</version>
-				<configuration>
-					<url>jdbc:postgresql://localhost:5437/postgres</url>
-					<user>postgres</user>
-					<password>Postgre12345!</password>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>

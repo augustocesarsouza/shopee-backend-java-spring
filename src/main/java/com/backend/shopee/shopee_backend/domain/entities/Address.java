@@ -1,11 +1,11 @@
 package com.backend.shopee.shopee_backend.domain.entities;
 
-import com.backend.shopee.shopee_backend.application.dto.UserDTO;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
 
 import java.util.List;
 import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "tb_address", schema = "public")
